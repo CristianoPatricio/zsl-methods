@@ -4,6 +4,18 @@
 
 Class: `ESZSL(args)`
 
+Functions:
+
+```
+Name: train(alpha, gamma) 
+:param alpha: int value
+:param gamma: int value
+:return: weights
+```
+```
+Name: test(weights)
+:param weights: array of shape (n_att, dim_feat)
+:return: zsl_acc, gzsl_seen_acc, gzsl_unseen_acc, gzsl_harmonic_mean
 ```
 Arguments:
 
