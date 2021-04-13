@@ -1,10 +1,19 @@
 # zsl-methods
 
-1. **ESZSL**
+## 1. **ESZSL**
 
-Class: `ESZSL(args)`
+**Class**: `ESZSL(args)`
 
-Functions:
+**Arguments**:
+```
+<dataset> : {AWA1, AWA2, CUB, SUN, aPY}
+<dataset_path> : {'./datasets/}
+<filename> : {name.mat, name.pickle}
+<alpha> : int value [-3,3] 
+<gamma> : int value [-3,3]
+```
+
+**Functions**:
 
 ```
 Name: train(alpha, gamma) 
@@ -16,14 +25,6 @@ Name: train(alpha, gamma)
 Name: test(weights)
 :param weights: array of shape (n_att, dim_feat)
 :return: zsl_acc, gzsl_seen_acc, gzsl_unseen_acc, gzsl_harmonic_mean
-```
-Arguments:
-
-<dataset> : {AWA1, AWA2, CUB, SUN, aPY}
-<dataset_path> : {'./datasets/}
-<filename> : {name.mat, name.pickle}
-<alpha> : int value [-3,3] 
-<gamma> : int value [-3,3]
 ```
 
 | Dataset | Hyperparameter |
