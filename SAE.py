@@ -9,7 +9,7 @@ import pickle
 parser = argparse.ArgumentParser(description='SAE')
 parser.add_argument('--dataset', type=str, default='AWA2',
                     help='Name of the dataset')
-parser.add_argument('--dataset_path', type=str, default='/home/cristianopatricio/Documents/Datasets/xlsa17/data/',
+parser.add_argument('--dataset_path', type=str, default='./datasets/',
                     help='Name of the dataset')
 parser.add_argument('--filename', type=str, default='res101.mat',
                     help='Name of the dataset features file')
