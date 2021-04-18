@@ -1,0 +1,25 @@
+att_splits.mat includes the following fields:
+
+att: columns correspond to class attribute vectors normalized to have unit l2 norm, following the classes order in allclasses.txt
+original_att: the original class attribute vectors without normalization
+
+ class_1  class_2 ... class_n
+[ att_1    att_1        att_1
+  att_2    att_2        att_2
+  ...      ...          ...
+  att_n    att_n        att_n]
+
+
+trainval_loc: instances indexes of train+val set features (for only seen classes) in resNet101.mat
+test_seen_loc: instances indexes of test set features for seen classes
+test_unseen_loc: instances indexes of test set features for unseen classes
+
+
+__________________________________________________________________________
+
+
+resnet.mat
+
+features: DxN matrix containing the D-dimensional features of the N images of the entire dataset
+labels: Nx1 matrix containing the class of each image/feature
+image_files: Nx1 cell array containing the names of the images
