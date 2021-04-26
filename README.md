@@ -116,3 +116,14 @@ Name: train(batch_size)
 | CUB     |   1600   |  1e-2   |  1e-4 |  | s= u=    H= ****
 | SUN     |   1600   |        |   |  | s=    u=  H=****
 | aPY     |   1600   |    |   |  | s=    u=  H=****
+
+## 4. f-CLSWGAN
+
+:warning: _Temporary version_
+
+**Run instructions**:
+```
+python3 original_f-CLSWGAN.py --download_mode
+python3 original_f-CLSWGAN.py --train_classifier
+python3 original_f-CLSWGAN.py --train_WGAN
+```
