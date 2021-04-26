@@ -26,7 +26,7 @@ Name: test(weights)
 :param weights: array of shape (n_att, dim_feat)
 :return: zsl_acc, gzsl_seen_acc, gzsl_unseen_acc, gzsl_harmonic_mean
 ```
-s
+
 | Dataset | Hyperparameter | Per-class Accuracy (%) | GZSL (s, u, H - %) |
 | ----------- | ----------- | :------------: | :------------- |
 | AWA1 | Alpha=3, Gamma=0 | 56.2 | s=86.8   u=5.3  H=**10.0** |

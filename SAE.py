@@ -21,7 +21,41 @@ parser.add_argument('--setting', type=str, default='V2S',
                     help='Type of evaluation {V2S, S2V}.')
 
 
-class SAE():
+def encode_labels(Y):
+    i = 0
+    for labels in np.unique(Y):
+        Y[Y == labels] = i
+        i += 1
+
+    return Y
+
+
+def normalizeFeature(x):
+    # x = d x N dims (d: feature dimension, N: the number of features)
+    x = x + 1e-10  # for avoid RuntimeWarning: invalid value encountered in divide
+    feature_norm = np.sum(x ** 2, axis=1) ** 0.5  # l2-norm
+    feat = x / feature_norm[:, np.newaxis]
+    return feat
+
+
+def compute_W(X, S, lamb):
+    """
+    SAE - Semantic Autoencoder
+    :param X: d x N data matrix
+    :param S: k x N semantic matrix
+    :param lamb: regularization parameter
+    :return: W -> k x d projection function
+    """
+
+    A = np.dot(S, S.T)
+    B = lamb * np.dot(X, X.T)
+    C = (1 + lamb) * np.dot(S, X.T)
+    W = solve_sylvester(A, B, C)
+
+    return W
+
+
+class SAE:
     """docstring for ClassName"""
 
     def __init__(self, args):
@@ -45,106 +79,71 @@ class SAE():
         test_seen_loc = 'test_seen_loc'
 
         labels = res101['labels']
-        self.labels_train = labels[np.squeeze(att_splits[train_loc] - 1)]
-        self.original_labels_train = self.labels_train.copy()
-        self.labels_val = labels[np.squeeze(att_splits[val_loc] - 1)]
-        self.labels_trainval = labels[np.squeeze(att_splits[trainval_loc] - 1)]
-        self.original_labels_trainval = self.labels_trainval.copy()
-        self.labels_test_unseen = labels[np.squeeze(att_splits[test_loc] - 1)]
-        self.original_labels_test = self.labels_test_unseen.copy()
-        self.labels_test_seen = labels[np.squeeze(att_splits[test_seen_loc] - 1)]
-        self.labels_test_gzsl = np.concatenate((self.labels_test_unseen, self.labels_test_seen), axis=0)
-        self.original_labels_test_gzsl = self.labels_test_gzsl.copy()
+        features = res101['features']
+        attributes = att_splits['att']
 
-        # For GZSL evaluation
-        self.decoded_seen_classes = self.labels_test_seen.copy()
-        self.decoded_unseen_classes = self.labels_test_unseen.copy()
-        self.decoded_y_true = self.labels_test_gzsl.copy()
+        # Train
+        self.X_train = features[:, np.squeeze(att_splits[train_loc] - 1)]   # shape (features_dim, n_samples)
+        self.X_train = normalizeFeature(self.X_train.T).T   # shape (features_dim, n_samples)
+        self.Y_train = labels[np.squeeze(att_splits[train_loc] - 1)]    # shape (n_samples, 1)
+        self.Y_train_unique = np.unique(self.Y_train)   # shape (n_samples,)
+        self.Y_train_orig = self.Y_train.copy()     # shape (n_samples, 1)
+        self.S_train = attributes.T[self.Y_train_orig - 1].squeeze().transpose()    # shape (n_samples_train, attribute_dim)
+        self.S_train_unique = attributes[:, self.Y_train_unique - 1]    # shape (attributes_dim, n_train_classes)
 
-        self.train_labels_seen = np.unique(self.labels_train)
-        self.val_labels_unseen = np.unique(self.labels_val)
-        self.trainval_labels_seen = np.unique(self.labels_trainval)
-        self.test_labels_unseen = np.unique(self.labels_test_unseen)
-        self.test_labels_gzsl = np.unique(self.labels_test_gzsl)
+        # Validation
+        self.X_val = features[:, np.squeeze(att_splits[val_loc] - 1)]
+        self.Y_val = labels[np.squeeze(att_splits[val_loc] - 1)]
+        self.Y_val_unique = np.unique(self.Y_val)
+        self.S_val = attributes.T[self.Y_val - 1].squeeze().transpose()
+        self.S_val_unique = attributes[:, self.Y_val_unique - 1]
 
-        # print("Number of overlapping classes between train and val:",
-        #      len(set(self.train_labels_seen).intersection(set(self.val_labels_unseen))))
-        # print("Number of overlapping classes between trainval and test:",
-        #      len(set(self.trainval_labels_seen).intersection(set(self.test_labels_unseen))))
+        # TrainVal
+        self.X_trainval = features[:, np.squeeze(att_splits[trainval_loc] - 1)]
+        self.X_trainval = normalizeFeature(self.X_trainval.T).T
+        self.Y_trainval = labels[np.squeeze(att_splits[trainval_loc] - 1)]
+        self.Y_trainval_unique = np.unique(self.Y_trainval)
+        self.Y_trainval_orig = self.Y_trainval.copy()
+        self.S_trainval = attributes.T[self.Y_trainval_orig - 1].squeeze().transpose()
+        self.S_trainval_unique = attributes[:, self.Y_trainval_unique - 1]
 
-        i = 0
-        for labels in self.train_labels_seen:
-            self.labels_train[self.labels_train == labels] = i
-            i = i + 1
-        j = 0
-        for labels in self.val_labels_unseen:
-            self.labels_val[self.labels_val == labels] = j
-            j = j + 1
-        k = 0
-        for labels in self.trainval_labels_seen:
-            self.labels_trainval[self.labels_trainval == labels] = k
-            k = k + 1
-        l = 0
-        for labels in self.test_labels_unseen:
-            self.labels_test_unseen[self.labels_test_unseen == labels] = l
-            l = l + 1
-        m = 0
-        for labels in self.test_labels_gzsl:
-            self.labels_test_gzsl[self.labels_test_gzsl == labels] = m
-            m = m + 1
+        # Test Unseen
+        self.X_test_unseen = features[:, np.squeeze(att_splits[test_loc] - 1)]
+        self.Y_test_unseen = labels[np.squeeze(att_splits[test_loc] - 1)]
+        self.Y_test_unseen_unique = np.unique(self.Y_test_unseen)
+        self.Y_test_unseen_orig = self.Y_test_unseen.copy()
+        self.S_test_unseen = attributes.T[self.Y_test_unseen_orig - 1].squeeze().transpose()
+        self.S_test_unseen_unique = attributes[:, self.Y_test_unseen_unique - 1]
 
-        X_features = res101['features']
-        self.train_vec = X_features[:, np.squeeze(att_splits[train_loc] - 1)]
-        self.train_vec = self.normalizeFeature(self.train_vec.T).T
-        self.val_vec = X_features[:, np.squeeze(att_splits[val_loc] - 1)]
-        self.trainval_vec = X_features[:, np.squeeze(att_splits[trainval_loc] - 1)]
-        self.trainval_vec = self.normalizeFeature(self.trainval_vec.T).T
-        self.test_vec = X_features[:, np.squeeze(att_splits[test_loc] - 1)]
-        self.test_vec_seen = X_features[:, np.squeeze(att_splits[test_seen_loc] - 1)]
-        self.test_gzsl = np.concatenate((self.test_vec, self.test_vec_seen), axis=1)
-        self.test_gzsl = self.normalizeFeature(self.test_gzsl.T).T
+        # Test Seen
+        self.X_test_seen = features[:, np.squeeze(att_splits[test_seen_loc] - 1)]
+        self.Y_test_seen = labels[np.squeeze(att_splits[test_seen_loc] - 1)]
+        self.Y_test_seen_orig = self.Y_test_seen.copy()
+        self.S_test_seen = attributes.T[self.Y_test_seen - 1].squeeze().transpose()
+        self.S_test_seen_unique = attributes[:, self.Y_test_unseen_unique - 1]
 
-        # Signature matrix
-        signature = att_splits['att']
-        self.train_sig = signature[:, (self.train_labels_seen) - 1]
-        self.train_all_sig = signature.T[(self.original_labels_train) - 1].squeeze().transpose()
-        self.val_sig = signature[:, (self.val_labels_unseen) - 1]
-        self.trainval_sig = signature[:, (self.trainval_labels_seen) - 1]
-        self.trainval_all_sig = signature.T[(self.original_labels_trainval) - 1].squeeze().transpose()
-        self.test_sig = signature[:, (self.test_labels_unseen) - 1]
-        self.test_all_sig = signature.T[(self.original_labels_test) - 1].squeeze().transpose()
-        self.test_gzsl_sig = signature[:, (self.test_labels_gzsl) - 1]
-        self.test_all_gzsl_sig = signature.T[(self.original_labels_test_gzsl) - 1].squeeze().transpose()
+        # GZSL
+        self.X_gzsl = np.concatenate((self.X_test_unseen, self.X_test_seen), axis=1)
+        self.X_gzsl = normalizeFeature(self.X_gzsl.T).T
+        self.Y_gzsl = np.concatenate((self.Y_test_unseen, self.Y_test_seen), axis=0)
+        self.Y_gzsl_unique = np.unique(self.Y_gzsl)
+        self.Y_gzsl_orig = self.Y_gzsl.copy()
+        self.S_gzsl = attributes.T[self.Y_gzsl_orig - 1].squeeze().transpose()
+        self.S_gzsl_unique = attributes[:, self.Y_gzsl_unique - 1]
 
-    def normalizeFeature(self, x):
-        # x = d x N dims (d: feature dimension, N: the number of features)
-        x = x + 1e-10  # for avoid RuntimeWarning: invalid value encountered in divide
-        feature_norm = np.sum(x ** 2, axis=1) ** 0.5  # l2-norm
-        feat = x / feature_norm[:, np.newaxis]
-        return feat
-
-    def SAE(self, X, S, lamb):
-        """
-        SAE - Semantic Autoencoder
-        :param X: d x N data matrix
-        :param S: k x N semantic matrix
-        :param lamb: regularization parameter
-        :return: W -> k x d projection function
-        """
-
-        A = np.dot(S, S.T)
-        B = lamb * np.dot(X, X.T)
-        C = (1 + lamb) * np.dot(S, X.T)
-        W = solve_sylvester(A, B, C)
-
-        return W
+        # Additional
+        self.Y_train = encode_labels(self.Y_train)
+        self.Y_val = encode_labels(self.Y_val)
+        self.Y_trainval = encode_labels(self.Y_trainval)
+        self.Y_test_unseen = encode_labels(self.Y_test_unseen)
+        self.Y_gzsl = encode_labels(self.Y_gzsl)
 
     def train_zsl(self, lamb):
-        W = self.SAE(self.train_vec, self.train_all_sig, lamb)
+        W = compute_W(self.X_train, self.S_train, lamb)
         return W
 
     def train_gzsl(self, lamb):
-        W = self.SAE(self.trainval_vec, self.trainval_all_sig, lamb)
+        W = compute_W(self.X_trainval, self.S_trainval, lamb)
         return W
 
     def gzsl_accuracy_semantic(self, weights):
@@ -158,20 +157,20 @@ class SAE():
         """
 
         # Test [V >>> S]
-        s_pred = np.dot(self.test_gzsl.T, self.normalizeFeature(weights).T)
+        s_pred = np.dot(self.X_gzsl.T, normalizeFeature(weights).T)
 
         # Calculate distance between the estimated representation and the projected prototypes
-        dist = distance.cdist(s_pred, self.test_gzsl_sig.T, metric='cosine')
+        dist = distance.cdist(s_pred, self.S_gzsl_unique.T, metric='cosine')
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
 
-        cmat = confusion_matrix(self.labels_test_gzsl, preds)
+        cmat = confusion_matrix(self.Y_gzsl, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
-        seen_classes_encoded = self.labels_test_gzsl[
-            np.where([self.decoded_y_true == i for i in self.decoded_seen_classes])[1]]
-        unseen_classes_encoded = self.labels_test_gzsl[
-            np.where([self.decoded_y_true == i for i in self.decoded_unseen_classes])[1]]
+        seen_classes_encoded = self.Y_gzsl[
+            np.where([self.Y_gzsl_orig == i for i in self.Y_test_seen_orig])[1]]
+        unseen_classes_encoded = self.Y_gzsl[
+            np.where([self.Y_gzsl_orig == i for i in self.Y_test_unseen_orig])[1]]
 
         acc_seen = np.mean(per_class_acc[seen_classes_encoded])
         acc_unseen = np.mean(per_class_acc[unseen_classes_encoded])
@@ -189,20 +188,20 @@ class SAE():
         :return: harmonic mean
         """
         # Test [S>>>V]
-        x_pred = np.dot(self.test_gzsl_sig.T, weights)
+        x_pred = np.dot(self.S_gzsl_unique.T, weights)
 
         # Calculate distance between the estimated representation and the projected prototypes
-        dist = distance.cdist(self.test_gzsl.T, self.normalizeFeature(x_pred), metric='cosine')
+        dist = distance.cdist(self.X_gzsl.T, normalizeFeature(x_pred), metric='cosine')
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
 
-        cmat = confusion_matrix(self.labels_test_gzsl, preds)
+        cmat = confusion_matrix(self.Y_gzsl, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
-        seen_classes_encoded = self.labels_test_gzsl[
-            np.where([self.decoded_y_true == i for i in self.decoded_seen_classes])[1]]
-        unseen_classes_encoded = self.labels_test_gzsl[
-            np.where([self.decoded_y_true == i for i in self.decoded_unseen_classes])[1]]
+        seen_classes_encoded = self.Y_gzsl[
+            np.where([self.Y_gzsl_orig == i for i in self.Y_test_seen_orig])[1]]
+        unseen_classes_encoded = self.Y_gzsl[
+            np.where([self.Y_gzsl_orig == i for i in self.Y_test_unseen_orig])[1]]
 
         acc_seen = np.mean(per_class_acc[seen_classes_encoded])
         acc_unseen = np.mean(per_class_acc[unseen_classes_encoded])
@@ -212,14 +211,14 @@ class SAE():
 
     def zsl_accuracy_semantic(self, weights):
         # Test [V >>> S]
-        s_pred = np.dot(self.test_vec.T, self.normalizeFeature(weights).T)
+        s_pred = np.dot(self.X_test_unseen.T, normalizeFeature(weights).T)
 
         # Calculate distance between the estimated representation and the projected prototypes
-        dist = distance.cdist(s_pred, self.test_sig.transpose(), metric='cosine')
+        dist = distance.cdist(s_pred, self.S_test_unseen_unique.transpose(), metric='cosine')
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
 
-        cmat = confusion_matrix(self.labels_test_unseen, preds)
+        cmat = confusion_matrix(self.Y_test_unseen, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
         acc = np.mean(per_class_acc)
@@ -228,14 +227,14 @@ class SAE():
 
     def zsl_accuracy_feature(self, weights):
         # Test [S >>> V]
-        x_pred = np.dot(self.test_sig.T, self.normalizeFeature(weights))
+        x_pred = np.dot(self.S_test_unseen_unique.T, normalizeFeature(weights))
 
         # Calculate distance between the estimated representation and the projected prototypes
-        dist = distance.cdist(self.test_vec.transpose(), self.normalizeFeature(x_pred), metric='cosine')
+        dist = distance.cdist(self.X_test_unseen.transpose(), normalizeFeature(x_pred), metric='cosine')
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
 
-        cmat = confusion_matrix(self.labels_test_unseen, preds)
+        cmat = confusion_matrix(self.Y_test_unseen, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
         acc = np.mean(per_class_acc)
