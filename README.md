@@ -26,14 +26,14 @@ Name: test(weights)
 :param weights: array of shape (n_att, dim_feat)
 :return: zsl_acc, gzsl_seen_acc, gzsl_unseen_acc, gzsl_harmonic_mean
 ```
-
+s
 | Dataset | Hyperparameter | Per-class Accuracy (%) | GZSL (s, u, H - %) |
 | ----------- | ----------- | :------------: | :------------- |
-| AWA1 | Alpha=3, Gamma=0 | 56.2 | s=91.1   u=16.5  H=**27.9** |
-| AWA2 | Alpha=3, Gamma=0 | 54.5 | s=92.8   u=6.5   H=**12.2** |
-| CUB | Alpha=2, Gamma=0 | 51.3 | s=63.0    u=11.8  H=**20.0** |
-| SUN | Alpha=2, Gamma=2 | 52.3 | s=27.3    u=13.1  H=**17.7** |
-| aPY | Alpha=3, Gamma=-1 | 38.5 | s=79.7   u=2.3   H=**4.6** |
+| AWA1 | Alpha=3, Gamma=0 | 56.2 | s=86.8   u=5.3  H=**10.0** |
+| AWA2 | Alpha=3, Gamma=0 | 54.5 | s=88.4   u=4.0   H=**7.8** |
+| CUB | Alpha=2, Gamma=0 | 51.3 | s=61.7    u=13.5  H=**22.2** |
+| SUN | Alpha=2, Gamma=2 | 52.3 | s=29.0    u=12.6  H=**17.5** |
+| aPY | Alpha=3, Gamma=-1 | 38.5 | s=80.2   u=2.4   H=**4.7** |
 
 ## 2. **SAE**
 
@@ -84,3 +84,35 @@ Name: test(weights_zsl, weights_gzsl, setting)
 | CUB     |   S2V   |  0.2   |  0.2   | 45.6 | s=57.0 u=16.9    H= **26.1**
 | SUN     |   S2V   |  0.16  |  0.08 | 60.2 | s=31.5    u=18.8  H=**23.6**
 | aPY     |   S2V   |  4.0   |  2.56 | 16.3 | s=70.1    u=0.7  H=**1.5**
+
+## 3. **DEM**
+
+**Class**: `DEM(args)`
+
+**Arguments**:
+```
+<dataset> : {AWA1, AWA2, CUB, SUN, aPY}
+<dataset_path> : {'./datasets/}
+<filename> : {name.mat, name.pickle}
+<lamb> : float value, default=1e-3
+<lr> : float value, default=1e-4
+<batch_size> : batch size, default=64
+<hidden_dim> : Dimension of the hidden layer, default=1600
+```
+
+**Functions**:
+
+```
+Name: train(batch_size) 
+:param batch_size: int value
+:return: -
+```
+
+
+| Dataset | Hidden Dim | Lambda | Learning Rate | Per-class Accuracy (%) | GZSL (s, u, H - %) |
+| ------- | :------:| :----------: | :-----------: | :--------------------: | :---------------- |
+| AWA1    |   1600   |  1e-3   |  1e-4 |  | s=  u=   H=****
+| AWA2    |   1600   |  1e-3   |  1e-4 |  | s=    u=   H=****
+| CUB     |   1600   |  1e-2   |  1e-4 |  | s= u=    H= ****
+| SUN     |   1600   |        |   |  | s=    u=  H=****
+| aPY     |   1600   |    |   |  | s=    u=  H=****
