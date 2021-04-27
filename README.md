@@ -119,11 +119,25 @@ Name: train(batch_size)
 
 ## 4. f-CLSWGAN
 
-:warning: _Temporary version_
+* Original version (f-CLSWGAN/orig/)
 
 **Run instructions**:
 ```
-python3 original_f-CLSWGAN.py --download_mode
-python3 original_f-CLSWGAN.py --train_classifier
-python3 original_f-CLSWGAN.py --train_WGAN
+python original_f-CLSWGAN.py --download_mode
+python original_f-CLSWGAN.py --train_classifier
+python original_f-CLSWGAN.py --train_WGAN
+```
+
+* Modified version :new:
+
+**Run instructions** (AWA1):
+```bash
+# Training Classifier
+python train_cls.py --manualSeed 9182 --preprocessing --lr 0.001 --image_embedding res101 --class_embedding att --nepoch 50 --dataset AWA1 --batch_size 100 --attSize 85 --resSize 2048 --modeldir 'models_classifier' --logdir 'logs_classifier' --dataroot '../datasets'
+
+# Training WGAN
+python train_wgan.py --manualSeed 9182 --cls_weight 0.01 --preprocessing --val_every 1 --lr 0.00001 --image_embedding res101 --class_embedding att --netG_name MLP_G --netD_name MLP_CRITIC --nepoch 30 --syn_num 300 --ngh 4096 --ndh 4096 --lambda1 10 --critic_iter 5 --dataset AWA1 --batch_size 64 --nz 85 --attSize 85 --resSize 2048 --modeldir 'models_awa' --logdir 'logs_awa' --dataroot '../datasets' --classifier_modeldir 'models_classifier'  --classifier_checkpoint 49 
+
+# Evaluate
+python evaluate.py --preprocessing --image_embedding res101 --class_embedding att --syn_num 300 --dataset AWA1 --batch_size 64 --dataroot '../datasets' --nclasses_all 50 --gzsl
 ```
