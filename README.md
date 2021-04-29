@@ -160,6 +160,19 @@ _Note_: The requirements to run the script are present in the scope of the `main
 
 **Run instructions**:
 ```bash
-python original_tf-vaegan --download_mode
-python original_tf-vaegan --train
+python original_tf-vaegan.py --download_mode
+python original_tf-vaegan.py --train
 ```
+
+## 6. CE-GZSL
+
+:page_facing_up: **Paper**: https://arxiv.org/pdf/2103.16173.pdf
+
+* Original version
+
+_Note_: The requirements to run the script are present in the scope of the `main` function in `original_ce-gzsl.py`script.   
+
+**Run instructions**:
+```bash
+python original_ce-gzsl.py --download_mode
+python original_ce-gzsl.py --train
