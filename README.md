@@ -2,6 +2,8 @@
 
 ## 1. **ESZSL**
 
+:page_facing_up: **Paper**: http://proceedings.mlr.press/v37/romera-paredes15.pdf
+
 **Class**: `ESZSL(args)`
 
 **Arguments**:
@@ -36,6 +38,8 @@ Name: test(weights)
 | aPY | Alpha=3, Gamma=-1 | 38.5 | s=80.2   u=2.4   H=**4.7** |
 
 ## 2. **SAE**
+
+:page_facing_up: **Paper**: https://arxiv.org/pdf/1704.08345.pdf
 
 **Class**: `SAE(args)`
 
@@ -87,6 +91,8 @@ Name: test(weights_zsl, weights_gzsl, setting)
 
 ## 3. **DEM**
 
+:page_facing_up: **Paper**: https://arxiv.org/pdf/1611.05088.pdf
+
 **Class**: `DEM(args)`
 
 **Arguments**:
@@ -119,6 +125,8 @@ Name: train(batch_size)
 
 ## 4. f-CLSWGAN
 
+:page_facing_up: **Paper**: https://arxiv.org/pdf/1712.00981.pdf
+
 * Original version (f-CLSWGAN/orig/)
 
 **Run instructions**:
@@ -140,4 +148,18 @@ python train_wgan.py --manualSeed 9182 --cls_weight 0.01 --preprocessing --val_e
 
 # Evaluate
 python evaluate.py --preprocessing --image_embedding res101 --class_embedding att --syn_num 300 --dataset AWA1 --batch_size 64 --dataroot '../datasets' --nclasses_all 50 --gzsl
+```
+
+## 5. TF-VAEGAN
+
+:page_facing_up: **Paper**: https://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123670477.pdf
+
+* Original version
+
+_Note_: The requirements to run the script are present in the scope of the `main` function in `original_tf-vaegan.py`script.   
+
+**Run instructions**:
+```bash
+python original_tf-vaegan --download_mode
+python original_tf-vaegan --train
 ```
