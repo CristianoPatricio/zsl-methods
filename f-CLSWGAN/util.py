@@ -27,11 +27,7 @@ class DATA_LOADER(object):
 
     def read_matdataset(self, opt):
 
-        if opt.image_embedding != "res101":
-            with open(opt.dataroot + "/" + opt.dataset + "/" + opt.image_embedding + ".pickle", "rb") as f:
-                matcontent = pickle.load(f)
-        else:
-            matcontent = sio.loadmat(opt.dataroot + "/" + opt.dataset + "/" + opt.image_embedding + ".mat")
+        matcontent = sio.loadmat(opt.dataroot + "/" + opt.dataset + "/" + opt.image_embedding + ".mat")
 
         feature = matcontent['features'].T
         label = matcontent['labels'].astype(int).squeeze() - 1
