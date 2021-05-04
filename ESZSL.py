@@ -173,7 +173,7 @@ class ESZSL:
                     print(alph1, gamm1, avg)
         print("Alpha and gamma:", alph1, gamm1)
 
-        return alpha, gamma
+        return alph1, gamm1
 
     def train(self, alpha, gamma):
         print("Trainval shape", self.X_trainval.shape)
