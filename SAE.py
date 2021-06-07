@@ -11,7 +11,7 @@ parser.add_argument('--dataset', type=str, default='AWA2',
                     help='Name of the dataset')
 parser.add_argument('--dataset_path', type=str, default='./datasets/',
                     help='Name of the dataset')
-parser.add_argument('--filename', type=str, default='res101.mat',
+parser.add_argument('--filename', type=str, default='res101',
                     help='Name of the dataset features file')
 parser.add_argument('--lamb_ZSL', type=float, default=2,
                     help='value of hyper-parameter')
@@ -19,6 +19,8 @@ parser.add_argument('--lamb_GZSL', type=float, default=2,
                     help='value of hyper-parameter')
 parser.add_argument('--setting', type=str, default='V2S',
                     help='Type of evaluation {V2S, S2V}.')
+parser.add_argument('--att_split', type=str, default='',
+                    help='In case of LAD dataset.')
 
 
 def encode_labels(Y):
@@ -61,16 +63,11 @@ class SAE:
     def __init__(self, args):
         print(f"Evaluating on {args.dataset}...")
 
-        point_position = args.filename.find('.')
-        extension = args.filename[point_position:]
+        self.dataset = args.dataset
+        self.att_split = args.att_split
 
-        if "mat" in extension:  # dataset file is a .mat file
-            res101 = scipy.io.loadmat(args.dataset_path + args.dataset + '/' + args.filename)
-        else:  # dataset file is a .pickle file
-            with open(args.dataset_path + args.dataset + '/' + args.filename, "rb") as f:
-                res101 = pickle.load(f)
-
-        att_splits = scipy.io.loadmat(args.dataset_path + args.dataset + '/att_splits.mat')
+        res101 = scipy.io.loadmat(args.dataset_path + args.dataset + '/' + args.filename + '.mat')
+        att_splits = scipy.io.loadmat(args.dataset_path + args.dataset + '/att_splits' + args.att_split + '.mat')
 
         trainval_loc = 'trainval_loc'
         train_loc = 'train_loc'
@@ -164,6 +161,10 @@ class SAE:
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
 
+        # Save preds seen
+        if self.dataset == "LAD":
+            np.savetxt("preds_SAE_GZSL_att"+str(self.att_split)+".txt", preds)
+
         cmat = confusion_matrix(self.Y_gzsl, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
@@ -195,6 +196,9 @@ class SAE:
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
 
+        if self.dataset == "LAD":
+            np.savetxt("preds_SAE_GZSL_att" +str(self.att_split) + ".txt", preds)
+
         cmat = confusion_matrix(self.Y_gzsl, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
@@ -218,6 +222,9 @@ class SAE:
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
 
+        if self.dataset == "LAD":
+            np.savetxt("preds_SAE_ZSL_att" + str(self.att_split) + ".txt", preds)
+
         cmat = confusion_matrix(self.Y_test_unseen, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
@@ -233,6 +240,9 @@ class SAE:
         dist = distance.cdist(self.X_test_unseen.transpose(), normalizeFeature(x_pred), metric='cosine')
         # Get the labels of predictions
         preds = np.array([np.argmin(y) for y in dist])
+
+        if self.dataset == "LAD":
+            np.savetxt("preds_SAE_ZSL_att" + str(self.att_split) + ".txt", preds)
 
         cmat = confusion_matrix(self.Y_test_unseen, preds)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
@@ -263,5 +273,5 @@ if __name__ == "__main__":
     # Test
     [zsl_acc, gzsl_acc_seen, gzsl_acc_unseen, gzsl_harmonic_mean] = model.test(weights_zsl, weights_gzsl, mode=args.setting)
     print(f"Mode: {args.setting}")
-    print(f"[ZSL] Top-1 Accuracy (%): {(zsl_acc * 100):.2f}")
-    print(f"[GZSL] Accuracy (%) - Seen: {(gzsl_acc_seen * 100):.2f}, Unseen: {(gzsl_acc_unseen * 100):.2f}, Harmonic: {(gzsl_harmonic_mean * 100):.2f}")
+    print(f"[ZSL] Top-1 Accuracy (%): {(zsl_acc * 100):.2f} %")
+    print(f"[GZSL] Accuracy (%) - Seen: {(gzsl_acc_seen * 100):.2f} %, Unseen: {(gzsl_acc_unseen * 100):.2f} %, Harmonic: {(gzsl_harmonic_mean * 100):.2f} %")
