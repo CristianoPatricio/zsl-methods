@@ -24,6 +24,13 @@ parser.add_argument('--batch_size', type=int, default=64,
                     help='Batch-size.')
 parser.add_argument('--hidden_dim', type=int, default=1600,
                     help='Dimension of hidden layer')
+parser.add_argument('--att_split', type=str, default='',
+                    help='In case of LAD dataset.')
+
+# Global Variable
+pred_list = [0] * 101
+pred_list_gzsl_seen = [0] * 101
+pred_list_gzsl_unseen = [0] * 101
 
 
 def weight_variable(shape):
@@ -36,13 +43,19 @@ def bias_variable(shape):
     return tf.Variable(initial)
 
 
-def compute_gzsl_accuracy(sess, att_features, A2, S, X, Y):
+def compute_gzsl_accuracy(sess, att_features, A2, S, X, Y, dataset, pos, seen):
     # Compute feature predictions
     feat_preds = sess.run(A2, feed_dict={att_features: S})
     # Calculate distance between the estimated representation and the projected prototypes
     dist = distance.cdist(X, feat_preds, metric='euclidean')
     # Get the labels of predictions
     preds = np.array([np.argmin(y) for y in dist])
+
+    if dataset == "LAD":
+        if seen:
+            pred_list_gzsl_seen[pos] = preds
+        else:
+            pred_list_gzsl_unseen[pos] = preds
 
     # Compute accuracy
     unique_labels = np.unique(Y)
@@ -55,12 +68,15 @@ def compute_gzsl_accuracy(sess, att_features, A2, S, X, Y):
     return acc
 
 
-def compute_zsl_accuracy(sess, att_features, A2, S, X, Y):
+def compute_zsl_accuracy(sess, att_features, A2, S, X, Y, dataset, pos):
     feat_preds = sess.run(A2, feed_dict={att_features: S})
     # Calculate distance between the estimated representation and the projected prototypes
     dist = distance.cdist(X, feat_preds, metric='euclidean')
     # Get the labels of predictions
     preds = np.array([np.argmin(y) for y in dist])
+
+    if dataset == "LAD":
+        pred_list[pos] = preds
 
     cmat = confusion_matrix(Y, preds)
     per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
@@ -75,16 +91,11 @@ class DEM:
     def __init__(self, args):
         print(f"Evaluating on {args.dataset}...")
 
-        point_position = args.filename.find('.')
-        extension = args.filename[point_position:]
+        self.dataset = args.dataset
+        self.att_split = args.att_split
 
-        if "mat" in extension:  # dataset file is a .mat file
-            matcontent = sio.loadmat(args.dataset_path + args.dataset + '/' + args.filename)
-        else:  # dataset file is a .pickle file
-            with open(args.dataset_path + args.dataset + '/' + args.filename, "rb") as f:
-                matcontent = pickle.load(f)
-
-        att_splits = sio.loadmat(args.dataset_path + args.dataset + '/att_splits.mat')
+        matcontent = sio.loadmat(args.dataset_path + args.dataset + '/' + args.filename + '.mat')
+        att_splits = sio.loadmat(args.dataset_path + args.dataset + '/att_splits' + args.att_split + '.mat')
 
         train_loc = 'train_loc'
         val_loc = 'val_loc'
@@ -161,14 +172,16 @@ class DEM:
                 att_batch = shuf_att[batch_idx:batch_idx + batch_size]
                 yield att_batch, visual_batch
 
-    def test(self, sess, att_features, A2):
-        zsl_acc = compute_zsl_accuracy(sess, att_features, A2, self.S_test_unseen, self.X_test_unseen, self.Y_test_unseen)
-        gzsl_seen_acc = compute_gzsl_accuracy(sess, att_features, A2, self.S_all, self.X_test_seen, self.Y_test_seen - 1)
-        gzsl_unseen_acc = compute_gzsl_accuracy(sess, att_features, A2, self.S_all, self.X_test_unseen, self.Y_test_unseen_orig - 1)
+    def test(self, sess, att_features, A2, index):
+        zsl_acc = compute_zsl_accuracy(sess, att_features, A2, self.S_test_unseen, self.X_test_unseen, self.Y_test_unseen, self.dataset, index)
+        gzsl_seen_acc = compute_gzsl_accuracy(sess, att_features, A2, self.S_all, self.X_test_seen, self.Y_test_seen - 1, self.dataset, index, seen=True)
+        gzsl_unseen_acc = compute_gzsl_accuracy(sess, att_features, A2, self.S_all, self.X_test_unseen, self.Y_test_unseen_orig - 1, self.dataset, index, seen=False)
         gzsl_harmonic_mean = 2 * gzsl_seen_acc * gzsl_unseen_acc / (gzsl_seen_acc + gzsl_unseen_acc)
 
         print(f"[INFO]: ZSL Accuracy (%) - {zsl_acc:.5f}")
         print(f"[INFO]: GZSL - seen={gzsl_seen_acc:.5f} unseen={gzsl_unseen_acc:.5f} Harmonic={gzsl_harmonic_mean:.5f}")
+
+        return zsl_acc, gzsl_seen_acc, gzsl_unseen_acc, gzsl_harmonic_mean
 
     def train(self, batch_size):
         # Define the placeholders for the inputs of the network
@@ -200,13 +213,41 @@ class DEM:
 
         saver = tf.train.Saver()
         # Run
+        best_acc = 0
+        best_unseen_acc = 0
+        best_seen_acc = 0
+        best_harmonic_acc = 0
+        index = 0
+        pos = 0
+        pos_gzsl = 0
         accuracy = []
         iter_ = self.data_iterator(batch_size=batch_size)
         for i in range(1000000):
             att_batch_val, visual_batch_val = next(iter_)
             sess.run(train_step, feed_dict={att_features: att_batch_val, visual_features: visual_batch_val})
             if i % 1000 == 0:
-                self.test(sess, att_features, A2)
+
+                zsl_acc, gzsl_seen_acc, gzsl_unseen_acc, gzsl_harmonic_mean = self.test(sess, att_features, A2, index)
+
+                if zsl_acc > best_acc:
+                    best_acc = zsl_acc
+                    pos = index
+
+                if gzsl_harmonic_mean > best_harmonic_acc:
+                    best_seen_acc = gzsl_seen_acc
+                    best_unseen_acc = gzsl_unseen_acc
+                    best_harmonic_acc = gzsl_harmonic_mean
+                    pos_gzsl = index
+
+                index += 1
+
+        print(f"[ZSL]: Best ZSL Top-1 Accuracy (%): {best_acc} %")
+        print(f"[GZSL]: Best GZSL Accuracy(%): Unseen: {best_unseen_acc} %, Seen:{best_seen_acc} %, Harmonic:{best_harmonic_acc} %")
+
+        if self.dataset == "LAD":
+            np.savetxt("preds_DEM_att"+str(self.att_split)+".txt", np.array(pred_list[pos]))
+            np.savetxt("preds_seen_DEM_GZSL_att"+str(self.att_split)+".txt", np.array(pred_list_gzsl_seen[pos_gzsl]))
+            np.savetxt("preds_unseen_DEM_GZSL_att"+str(self.att_split)+".txt", np.array(pred_list_gzsl_unseen[pos_gzsl]))
 
 
 if __name__ == '__main__':
