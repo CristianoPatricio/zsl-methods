@@ -15,6 +15,8 @@ parser.add_argument('--alpha', type=int, default=2,
                     help='value of hyper-parameter')
 parser.add_argument('--gamma', type=int, default=2,
                     help='value of hyper-parameter')
+parser.add_argument('--att_split', type=str, default='',
+                    help='In case of LAD dataset.')
 
 
 def encode_labels(Y):
@@ -26,10 +28,16 @@ def encode_labels(Y):
     return Y
 
 
-def compute_gzsl_accuracy(X, Y, S, weights):
+def compute_gzsl_accuracy(X, Y, S, weights, dataset, split, seen):
 
     outputs = np.matmul(np.matmul(X.transpose(), weights), S)
     preds = np.argmax(outputs, axis=1) + 1
+
+    if dataset == "LAD":
+        if seen:
+            np.savetxt("preds_seen_ESZSL_att"+str(split)+".txt", preds)
+        else:
+            np.savetxt("preds_unseen_ESZSL_att"+str(split)+".txt", preds)
 
     # Compute accuracy
     unique_labels = np.unique(Y)
@@ -46,16 +54,11 @@ class ESZSL:
 
     def __init__(self, args):
 
-        point_position = args.filename.find('.')
-        extension = args.filename[point_position:]
+        self.dataset = args.dataset
+        self.att_split = args.att_split
 
-        if "mat" in extension:  # dataset file is a .mat file
-            res101 = scipy.io.loadmat(args.dataset_path + args.dataset + '/' + args.filename)
-        else:   # dataset file is a .pickle file
-            with open(args.dataset_path + args.dataset + '/' + args.filename, "rb") as f:
-                res101 = pickle.load(f)
-
-        att_splits = scipy.io.loadmat(args.dataset_path + args.dataset + '/att_splits.mat')
+        res101 = scipy.io.loadmat(args.dataset_path + args.dataset + '/' + args.filename + '.mat')
+        att_splits = scipy.io.loadmat(args.dataset_path + args.dataset + '/att_splits' + args.att_split + '.mat')
 
         trainval_loc = 'trainval_loc'
         train_loc = 'train_loc'
@@ -105,11 +108,6 @@ class ESZSL:
         self.Y_gzsl_unique = np.unique(self.Y_gzsl)
         self.Y_gzsl_orig = self.Y_gzsl.copy()
         self.S_gszl = attributes[:, self.Y_gzsl_unique - 1]
-
-        print("Number of overlapping classes between train and val:",
-              len(set(self.Y_train_unique).intersection(set(self.Y_val_unique))))
-        print("Number of overlapping classes between trainval and test:",
-              len(set(self.Y_trainval_unique).intersection(set(self.Y_test_unseen_unique))))
 
         # Additional
         self.Y_train = encode_labels(self.Y_train)
@@ -176,9 +174,6 @@ class ESZSL:
         return alph1, gamm1
 
     def train(self, alpha, gamma):
-        print("Trainval shape", self.X_trainval.shape)
-        print("GT trainval shape", self.gt_trainval.shape)
-        print("Sig trainval shape", self.S_trainval.shape)
         # trainval set
         d_trainval = self.X_trainval.shape[0]
         a_trainval = self.S_trainval.shape[0]
@@ -199,6 +194,10 @@ class ESZSL:
 
         outputs_1 = np.matmul(np.matmul(self.X_test_unseen.transpose(), weights), self.S_test_unseen)
         preds_1 = np.argmax(outputs_1, axis=1)
+
+        if self.dataset == "LAD":
+            np.savetxt("preds_ESZSL_ZSL_att"+str(self.att_split)+".txt", preds_1)
+
         cmat = confusion_matrix(self.Y_test_unseen, preds_1)
         per_class_acc = cmat.diagonal() / cmat.sum(axis=1)
 
@@ -213,20 +212,16 @@ class ESZSL:
         :return: ZSL Accuracy, GZSL Seen Accuracy, GZSL Unseen Accuracy, GZSL Harmonic Mean
         """
 
-        print("x_test: ", self.X_test_unseen.shape)
-        print("s_test: ", self.S_test_unseen.shape)
-        print(f"Weights shape: {weights.shape}")
-
         # ZSL
         zsl_acc = self.zsl_accuracy(weights)
 
         # GZSL
-        acc_seen = compute_gzsl_accuracy(self.X_test_seen, self.Y_test_seen_orig, self.S_gszl, weights)
-        acc_unseen = compute_gzsl_accuracy(self.X_test_unseen, self.Y_test_unseen_orig, self.S_gszl, weights)
+        acc_seen = compute_gzsl_accuracy(self.X_test_seen, self.Y_test_seen_orig, self.S_gszl, weights, self.dataset, self.att_split, seen=True)
+        acc_unseen = compute_gzsl_accuracy(self.X_test_unseen, self.Y_test_unseen_orig, self.S_gszl, weights, self.dataset, self.att_split, seen=False)
         harmonic_mean = (2 * acc_seen * acc_unseen) / (acc_seen + acc_unseen)
 
-        print(f"The top-1 accuracy is: {(zsl_acc * 100):.2f} %")
-        print(f"[GZSL]: Seen: {(acc_seen * 100):.2f} % | Unseen: {(acc_unseen * 100):.2f} % | H: {(harmonic_mean * 100):.2f} %")
+        print(f"[ZSL] Top-1 Accuracy (%): {(zsl_acc * 100):.2f} %")
+        print(f"[GZSL]: Accuracy(%) - Seen: {(acc_seen * 100):.2f} %, Unseen: {(acc_unseen * 100):.2f} %, Harmonic: {(harmonic_mean * 100):.2f} %")
 
         return zsl_acc, acc_seen, acc_unseen, harmonic_mean
 
