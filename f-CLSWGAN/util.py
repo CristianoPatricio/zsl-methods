@@ -1,3 +1,10 @@
+"""
+NOTE:
+1. This code was originally created by the author of the GitHub repository https://github.com/Hanzy1996/CE-GZSL
+2. All changes were made by the author of the current repository in order to adapt the output to the standardized nomenclature of the rest of
+the implemented methods.
+"""
+
 from __future__ import print_function
 import numpy as np
 import scipy.io as sio
@@ -31,7 +38,7 @@ class DATA_LOADER(object):
 
         feature = matcontent['features'].T
         label = matcontent['labels'].astype(int).squeeze() - 1
-        matcontent = sio.loadmat(opt.dataroot + "/" + opt.dataset + "/" + opt.class_embedding + "_splits.mat")
+        matcontent = sio.loadmat(opt.dataroot + "/" + opt.dataset + "/" + opt.class_embedding + "_splits"+ opt.split_no +".mat")
 
         # numpy array index starts from 0, matlab starts from 1
         trainval_loc = matcontent['trainval_loc'].squeeze() - 1

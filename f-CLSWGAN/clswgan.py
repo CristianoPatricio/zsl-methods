@@ -1,3 +1,10 @@
+"""
+NOTE:
+1. This code was originally created by the author of the GitHub repository https://github.com/Hanzy1996/CE-GZSL
+2. All changes were made by the author of the current repository in order to adapt the output to the standardized nomenclature of the rest of
+the implemented methods.
+"""
+
 from __future__ import print_function
 import os, os.path
 import numpy as np

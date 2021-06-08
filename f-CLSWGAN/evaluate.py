@@ -14,7 +14,7 @@ tf.get_logger().setLevel('ERROR')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', default='AWA1', help='AWA1')
-parser.add_argument('--dataroot', default='../datasets', help='path to dataset')
+parser.add_argument('--dataroot', default='/home/cristiano.patricio/datasets/xlsa17/data', help='path to dataset')
 parser.add_argument('--matdataset', default=True, help='Data in matlab format')
 parser.add_argument('--image_embedding', default='res101')
 parser.add_argument('--class_embedding', default='att')
@@ -26,6 +26,8 @@ parser.add_argument('--standardization', action='store_true', default=False)
 parser.add_argument('--validation', action='store_true', default=False, help='enable cross validation mode')
 parser.add_argument('--batch_size', type=int, default=64, help='input batch size')
 parser.add_argument('--nclass_all', type=int, default=50, help='number of all classes')
+parser.add_argument('--split_no', type=str, default='', help="Split number in case of LAD dataset.")
+parser.add_argument('--syn_att', type=str, default='', help="Split number in case of LAD dataset.")
 
 opt = parser.parse_args()
 
@@ -36,7 +38,7 @@ data = util.DATA_LOADER(opt)
 
 # Syn features
 syn_res = []
-with open("syn_res.txt", "r") as f:
+with open(os.path.join(os.getcwd(), "syn_res"+str(opt.split_no)+".txt"), "r") as f:
     lines = f.readlines()
     for l in lines:
         features = []
@@ -51,7 +53,7 @@ syn_res = np.asarray(syn_res) # Shape (3000, 2048)
 
 # Labels
 syn_label = []
-with open("syn_label.txt", "r") as f:
+with open(os.path.join(os.getcwd(), "syn_label"+str(opt.split_no)+".txt"), "r") as f:
     lines = f.readlines()
     for l in lines:
         label = int(float(l.rstrip().lstrip()))
@@ -68,15 +70,16 @@ print(f"[INFO] Evaluating on {opt.dataset}...")
 train_X = np.concatenate((data.train_feature, syn_res), axis=0)
 train_Y = np.concatenate((data.train_label, syn_label), axis=0)
 nclass = opt.nclass_all
-train_gzsl = classifier2.CLASSIFICATION2(train_X, train_Y, data, nclass, './logs_gzsl_classifier',
-                                        './models_gzsl_classifier', 0.001, 0.5, 25, opt.syn_num, True)
+train_gzsl = classifier2.CLASSIFICATION2(opt.dataset, train_X, train_Y, data, nclass, os.path.join(os.getcwd(), 'logs_gzsl_classifier'),
+                                        os.path.join(os.getcwd(), 'models_gzsl_classifier'), opt.split_no, 0.001, 0.5, 25, opt.syn_num, True)
 
 tf.reset_default_graph()
 
-train_zsl = classifier2.CLASSIFICATION2(syn_res, util.map_label(syn_label, data.unseenclasses), data,
-                                        data.unseenclasses.shape[0], './logs_zsl_classifier', './models_zsl_classifier',
+train_zsl = classifier2.CLASSIFICATION2(opt.dataset, syn_res, util.map_label(syn_label, data.unseenclasses), data,
+                                        data.unseenclasses.shape[0], os.path.join(os.getcwd(), 'logs_zsl_classifier'), os.path.join(os.getcwd(), 'models_zsl_classifier'), opt.split_no,
                                         0.001, 0.5, 25, opt.syn_num, False)
 
 
-print(f"[GZSL]  Accuracy (%) - Seen={train_gzsl.acc_seen:.4f}, Unseen={train_gzsl.acc_unseen:.4f}, Harmonic={train_gzsl.H:.4f}")
-print(f"[ZSL] Top-1 Accuracy (%): {train_zsl.acc:.4f}")
+print(f"[ZSL] Top-1 Accuracy (%): {train_zsl.acc:.2f} %")
+print(f"[GZSL] Accuracy (%) - Seen: {train_gzsl.acc_seen:.2f} %, Unseen: {train_gzsl.acc_unseen:.2f} %, Harmonic={train_gzsl.H:.2f} %")
+

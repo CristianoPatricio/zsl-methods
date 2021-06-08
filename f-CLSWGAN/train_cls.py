@@ -18,7 +18,7 @@ tf.get_logger().setLevel('ERROR')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', default='AWA1', help='AWA1')
-parser.add_argument('--dataroot', default='../datasets', help='path to dataset')
+parser.add_argument('--dataroot', default='/home/cristianopatricio/Documents/Datasets/xlsa17/data', help='path to dataset')
 parser.add_argument('--matdataset', default=True, help='Data in matlab format')
 parser.add_argument('--image_embedding', default='res101')
 parser.add_argument('--class_embedding', default='att')
@@ -34,9 +34,10 @@ parser.add_argument('--attSize', type=int, default=1024, help='size of semantic 
 parser.add_argument('--nepoch', type=int, default=1, help='number of epochs to train for')
 parser.add_argument('--lr', type=float, default=0.0001, help='learning rate to train GANs ')
 parser.add_argument('--beta1', type=float, default=0.5, help='beta1 for adam. default=0.5')
-parser.add_argument('--logdir', default='./logs_classifier', help='folder to output and help print losses')
-parser.add_argument('--modeldir', default='./models_classifier', help='folder to output  model checkpoints')
+parser.add_argument('--logdir', default='/home/cristianopatricio/PycharmProjects/zsl-methods/f-CLSWGAN/logs_classifier', help='folder to output and help print losses')
+parser.add_argument('--modeldir', default='/home/cristianopatricio/PycharmProjects/zsl-methods/f-CLSWGAN/models_classifier', help='folder to output  model checkpoints')
 parser.add_argument('--manualSeed', type=int, default=42, help='manual seed')
+parser.add_argument('--split_no', type=str, default='', help="Split number in case of LAD dataset.")
 
 opt = parser.parse_args()
 

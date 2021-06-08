@@ -1,3 +1,10 @@
+"""
+NOTE:
+1. This code was originally created by the author of the GitHub repository https://github.com/Hanzy1996/CE-GZSL
+2. All changes were made by the author of the current repository in order to adapt the output to the standardized nomenclature of the rest of
+the implemented methods.
+"""
+
 import tensorflow.compat.v1 as tf
 tf.compat.v1.disable_v2_behavior()
 import numpy as np
@@ -8,7 +15,6 @@ import os,os.path
 import random
 
 tf.get_logger().setLevel('ERROR')
-
 
 def classificationLayer(x,classes,name="classification",reuse=False,isTrainable=True):
        
@@ -26,7 +32,7 @@ def classificationLayer(x,classes,name="classification",reuse=False,isTrainable=
 
 class CLASSIFICATION2:
     # train_Y is interger 
-    def __init__(self, _train_X, _train_Y, data_loader, _nclass, logdir, modeldir, _lr=0.001, _beta1=0.5, _nepoch=20, _batch_size=100, generalized=True):
+    def __init__(self, dataset, _train_X, _train_Y, data_loader, _nclass, logdir, modeldir, split_no, _lr=0.001, _beta1=0.5, _nepoch=20, _batch_size=100, generalized=True):
         self.train_X =  _train_X 
         self.train_Y = _train_Y 
         self.test_seen_feature = data_loader.test_seen_feature
@@ -46,6 +52,8 @@ class CLASSIFICATION2:
         self.ntrain = self.train_X.shape[0]
         self.logdir = logdir
         self.modeldir = modeldir
+        self.split_no = split_no
+        self.dataset = dataset
         ##########model_definition
         self.input = tf.placeholder(tf.float32,[self.batch_size, self.input_dim],name='input')
         self.label =  tf.placeholder(tf.int32,[self.batch_size],name='label')
@@ -71,7 +79,11 @@ class CLASSIFICATION2:
             tf.summary.histogram(v.name+str('grad'),g)
 
         self.saver = tf.train.Saver()
-        self.merged_all = tf.summary.merge_all()        
+        self.merged_all = tf.summary.merge_all()
+
+        self.preds_zsl = [0] * self.nepoch
+        self.preds_seen_gzsl = [0] * self.nepoch
+        self.preds_unseen_gzsl = [0] * self.nepoch
 
         if generalized:
             self.acc_seen, self.acc_unseen, self.H = self.fit()
@@ -121,6 +133,8 @@ class CLASSIFICATION2:
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
             summary_writer = tf.summary.FileWriter(self.logdir, sess.graph)
+            index = 0
+            pos = 0
             for epoch in range(self.nepoch):
                 for i in range(0, self.ntrain, self.batch_size):
                     batch_input, batch_label = self.next_batch(self.batch_size)
@@ -134,8 +148,8 @@ class CLASSIFICATION2:
                 #print ("Model saved")
                 acc_seen = 0
                 acc_unseen = 0
-                acc_seen = self.val_gzsl(self.test_seen_feature, self.test_seen_label, self.seenclasses,epoch)*100
-                acc_unseen = self.val_gzsl(self.test_unseen_feature, self.test_unseen_label, self.unseenclasses,epoch)*100
+                acc_seen = self.val_gzsl(self.test_seen_feature, self.test_seen_label, self.seenclasses,epoch, index, seen=True)*100
+                acc_unseen = self.val_gzsl(self.test_unseen_feature, self.test_unseen_label, self.unseenclasses,epoch, index, seen=False)*100
                 #print ('inside gzsl')
                 #print (acc_seen,acc_unseen)
                 H = 2*acc_seen*acc_unseen / (acc_seen+acc_unseen)
@@ -144,6 +158,14 @@ class CLASSIFICATION2:
                     best_seen = acc_seen
                     best_unseen = acc_unseen
                     best_H = H
+                    pos = index
+
+                index += 1
+
+            if self.dataset == "LAD":
+                np.savetxt("preds_seen_fCLSWGAN_ gzsl_att"+str(self.split_no)+".txt", self.preds_seen_gzsl[pos])
+                np.savetxt("preds_unseen_fCLSWGAN_gzsl_att"+str(self.split_no)+".txt", self.preds_unseen_gzsl[pos])
+
         return best_seen, best_unseen, best_H
 
     def fit_zsl(self):
@@ -152,6 +174,8 @@ class CLASSIFICATION2:
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
             summary_writer = tf.summary.FileWriter(self.logdir, sess.graph)
+            index = 0
+            pos = 0
             for epoch in range(self.nepoch):
                 for i in range(0, self.ntrain, self.batch_size):      
                     batch_input, batch_label = self.next_batch(self.batch_size)
@@ -163,13 +187,20 @@ class CLASSIFICATION2:
                 
                 self.saver.save(sess, os.path.join(self.modeldir, 'models_'+str(epoch)+'.ckpt')) 
                 #print ("Model saved")
-                acc = self.val(self.test_unseen_feature, self.test_unseen_label, self.unseenclasses,epoch)*100
+                acc = self.val(self.test_unseen_feature, self.test_unseen_label, self.unseenclasses,epoch,index)*100
                 #print (acc)
                 if acc > best_acc:
                     best_acc = acc
-        return best_acc 
+                    pos = index
 
-    def val_gzsl(self, test_X, test_label, target_classes,epoch): 
+                index += 1
+
+            if self.dataset == "LAD":
+                np.savetxt("preds_fCLSWGAN_zsl_att"+str(self.split_no)+".txt", self.preds_zsl[pos])
+
+        return best_acc
+
+    def val_gzsl(self, test_X, test_label, target_classes,epoch, index, seen=True):
         start = 0
         ntest = test_X.shape[0]
         predicted_label = np.empty_like(test_label)  
@@ -204,6 +235,13 @@ class CLASSIFICATION2:
                 predicted_label[start:end] = np.argmax(np.squeeze(np.array(output)), axis=1)
                 start = end
 
+            print(np.array(predicted_label).shape)
+
+            if seen:
+                self.preds_seen_gzsl[index] = predicted_label
+            else:
+                self.preds_unseen_gzsl[index] = predicted_label
+
             acc = self.compute_per_class_acc_gzsl(test_label, predicted_label, target_classes)
         return acc
 
@@ -217,7 +255,7 @@ class CLASSIFICATION2:
         acc_per_class /= target_classes.shape[0]
         return acc_per_class 
 
-    def val(self, test_X, test_label, target_classes,epoch): 
+    def val(self, test_X, test_label, target_classes,epoch,pos):
         start = 0
         ntest = test_X.shape[0]
         predicted_label = np.empty_like(test_label)
@@ -254,6 +292,7 @@ class CLASSIFICATION2:
                 predicted_label[start:end] = np.argmax(np.squeeze(np.array(output)), axis=1)
                 start = end
 
+            self.preds_zsl[pos] = predicted_label
             acc = self.compute_per_class_acc(util.map_label(test_label, target_classes), predicted_label, target_classes.shape[0])
         return acc
 

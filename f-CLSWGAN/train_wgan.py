@@ -14,7 +14,7 @@ tf.get_logger().setLevel('ERROR')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', default='AWA1', help='AWA1')
-parser.add_argument('--dataroot', default='../datasets', help='path to dataset')
+parser.add_argument('--dataroot', default='/home/cristiano.patricio/datasets/xlsa17/data', help='path to dataset')
 parser.add_argument('--matdataset', default=True, help='Data in matlab format')
 parser.add_argument('--image_embedding', default='res101')
 parser.add_argument('--class_embedding', default='att')
@@ -36,21 +36,23 @@ parser.add_argument('--lambda1', type=float, default=10, help='gradient penalty 
 parser.add_argument('--cls_weight', type=float, default=0.01, help='weight of the classification loss')
 parser.add_argument('--lr', type=float, default=0.0001, help='learning rate to train GANs ')
 parser.add_argument('--classifier_lr', type=float, default=0.001, help='learning rate to train softmax classifier')
-parser.add_argument('--classifier_modeldir', default='./models_classifier',
+parser.add_argument('--classifier_modeldir', default='/home/cristiano.patricio/condor_jobs/f-CLSWGAN/models_classifier',
                     help='folder to get classifier model checkpoints')
 parser.add_argument('--classifier_checkpoint', type=int, default=14,
                     help='tells which ckpt file of tensorflow model to load')
 parser.add_argument('--beta1', type=float, default=0.5, help='beta1 for adam. default=0.5')
 parser.add_argument('--netG_name', default='')
 parser.add_argument('--netD_name', default='')
-parser.add_argument('--logdir', default='./logs_AWA1', help='folder to output and hel#p print losses')
-parser.add_argument('--modeldir', default='./models_AWA1', help='folder to output  model checkpoints')
+parser.add_argument('--logdir', default='/home/cristiano.patricio/condor_jobs/f-CLSWGAN/logs_AWA1', help='folder to output and hel#p print losses')
+parser.add_argument('--modeldir', default='/home/cristiano.patricio/condor_jobs/f-CLSWGAN/models_AWA1', help='folder to output  model checkpoints')
 parser.add_argument('--save_every', type=int, default=100)
 parser.add_argument('--print_every', type=int, default=1)
 parser.add_argument('--val_every', type=int, default=1)
 parser.add_argument('--start_epoch', type=int, default=0)
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--nclass_all', type=int, default=50, help='number of all classes')
+parser.add_argument('--split_no', type=str, default='', help="Split number in case of LAD dataset.")
+parser.add_argument('--syn_att', type=str, default='', help="Split number in case of LAD dataset.")
 
 opt = parser.parse_args()
 
@@ -264,5 +266,5 @@ with tf.Session(graph=g2) as sess:
 
     ## print (syn_res.shape)
     ## print (syn_label.shape)
-    np.savetxt('syn_res.txt', syn_res, delimiter=',')
-    np.savetxt('syn_label.txt', syn_label, delimiter=',')
+    np.savetxt(os.path.join(os.getcwd(), 'syn_res'+str(opt.split_no)+'.txt'), syn_res, delimiter=',')
+    np.savetxt(os.path.join(os.getcwd(), 'syn_label'+str(opt.split_no)+'.txt'), syn_label, delimiter=',')
