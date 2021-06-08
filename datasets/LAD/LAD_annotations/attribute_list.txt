@@ -1,0 +1,359 @@
+Attr_A_001, color: is black, 颜色: 是黑色的
+Attr_A_002, color: is white, 颜色: 是白色的
+Attr_A_003, color: is blue, 颜色: 是蓝色的
+Attr_A_004, color: is cyan, 颜色: 是青色的
+Attr_A_005, color: is brown, 颜色: 是棕色的
+Attr_A_006, color: is gray, 颜色: 是灰色的
+Attr_A_007, color: is orange, 颜色: 是橙色的
+Attr_A_008, color: is red, 颜色: 是红色的
+Attr_A_009, color: is violet, 颜色: 是紫色的
+Attr_A_010, color: is green, 颜色: 是绿色的
+Attr_A_011, color: is yellow, 颜色: 是黄色的
+Attr_A_012, color: is transparent, 颜色: 是透明的
+Attr_A_013, appearance: is furry, 外表: 是毛茸茸的
+Attr_A_014, appearance: is hairless, 外表: 是无毛的
+Attr_A_015, appearance: has soft skin, 外表: 有柔软的皮肤
+Attr_A_016, appearance: has tough skin, 外表: 有坚韧的皮肤
+Attr_A_017, appearance: is acicular, 外表: 外表是针状的
+Attr_A_018, appearance: has feathers, 外表: 有羽毛
+Attr_A_019, appearance: has scales, 外表: 有鳞片
+Attr_A_020, appearance: is smooth, 外表: 是光滑的
+Attr_A_021, appearance: is mucous, 外表: 是粘的（有粘液）
+Attr_A_022, appearance: has shells, 外表: 有壳
+Attr_A_023, appearance: has whiskers, 外表: 有胡须
+Attr_A_024, marking: has patches, 斑纹: 有块状斑纹
+Attr_A_025, marking: has spots, 斑纹: 有点状斑纹
+Attr_A_026, marking: has stripes, 斑纹: 有条状斑纹
+Attr_A_027, size: is small (compared to pigs), 大小: 是小的（比猪小）
+Attr_A_028, size: is middle (compared to pigs), 大小: 是中等的（与猪近似大小）
+Attr_A_029, size: is big (compared to pigs), 大小: 是大的（比猪大）
+Attr_A_030, limb: has short legs, 肢体: 有短的腿
+Attr_A_031, limb: has long legs, 肢体: 有长的腿
+Attr_A_032, limb: is bipedal, 肢体: 是两条腿走路的
+Attr_A_033, limb: has four legs, 肢体: 有四条腿
+Attr_A_034, limb: has two legs, 肢体: 只有两条腿
+Attr_A_035, limb: has two arms, 肢体: 有两个胳膊
+Attr_A_036, limb: has tentacle, 肢体: 有触手
+Attr_A_037, wing: has short wings, 翅膀: 有短的翅膀
+Attr_A_038, wing: has long wings, 翅膀: 有长的翅膀
+Attr_A_039, paws: has paws, 爪子: 有爪子
+Attr_A_040, paws: has pads, 爪子: 有肉垫
+Attr_A_041, paws: has hooves, 爪子: 有蹄子
+Attr_A_042, neck: has a short neck, 脖子: 有长脖子
+Attr_A_043, neck: has a long neck, 脖子: 有短脖子
+Attr_A_044, teeth: has teeth, 牙齿: 有牙齿
+Attr_A_045, teeth: has buck teeth, 牙齿: 有獠牙
+Attr_A_046, teeth: has tusks, 牙齿: 有长牙（象牙）
+Attr_A_047, tail: has a short tail, 尾巴: 有短尾巴
+Attr_A_048, tail: has a long tail, 尾巴: 有长尾巴
+Attr_A_049, tail: has a colorful tail, 尾巴: 有彩色尾巴
+Attr_A_050, horn: has short horns, 角: 有短的角
+Attr_A_051, horn: has long horns, 角: 有长的角
+Attr_A_052, horn: has cuspidal horns, 角: 有尖的角
+Attr_A_053, horn: has curved horns, 角: 有弯曲的角
+Attr_A_054, horn: has only one horn, 角: 只有一个角
+Attr_A_055, beak: has a curved beak, 喙: 有弯曲的喙
+Attr_A_056, beak: has a dagger beak, 喙: 有匕首状的喙
+Attr_A_057, beak: has a hooked beak, 喙: 有勾状的喙
+Attr_A_058, beak: has a needle beak, 喙: 有尖的喙
+Attr_A_059, beak: has a short beak, 喙: 有短的喙
+Attr_A_060, beak: has a long beak, 喙: 有长的喙
+Attr_A_061, smell: is smelly, 气味: 是气味难闻的
+Attr_A_062, other body parts: has a tongue, 其他身体部位: 有舌头
+Attr_A_063, other body parts: has eyes, 其他身体部位: 有眼睛
+Attr_A_064, other body parts: has fins, 其他身体部位: 有鱼鳍
+Attr_A_065, other body parts: has ears, 其他身体部位: 有耳朵
+Attr_A_066, other body parts: has a nose, 其他身体部位: 有鼻子
+Attr_A_067, other body parts: has a shell, 其他身体部位: 有壳
+Attr_A_068, other body parts: has a backbone, 其他身体部位: 有脊椎
+Attr_A_069, behaviour: can swim, 行为: 能游泳
+Attr_A_070, behaviour: can fly, 行为: 能飞行
+Attr_A_071, behaviour: can walk, 行为: 能行走
+Attr_A_072, behaviour: can lay eggs, 行为: 能下蛋
+Attr_A_073, behaviour: can jump, 行为: 能跳跃
+Attr_A_074, behaviour: can climb trees, 行为: 能爬树
+Attr_A_075, behaviour: can fish, 行为: 能捕鱼
+Attr_A_076, diet: eats plants, 饮食: 吃植物
+Attr_A_077, diet: eats insects, 饮食: 吃昆虫
+Attr_A_078, diet: eats fish, 饮食: 吃鱼
+Attr_A_079, diet: eats leaves, 饮食: 吃树叶
+Attr_A_080, diet: eats meat, 饮食: 吃肉
+Attr_A_081, diet: eats seeds, 饮食: 吃种子
+Attr_A_082, diet: eats nectar, 饮食: 吃花蜜
+Attr_A_083, diet: eats plankton, 饮食: 吃浮游生物
+Attr_A_084, habit: moves fast, 习性: 行动快速
+Attr_A_085, habit: moves slow, 习性: 行动缓慢
+Attr_A_086, habit: is strong, 习性: 是强壮的
+Attr_A_087, habit: is weak, 习性: 是弱小的
+Attr_A_088, habit: has muscle, 习性: 有肌肉
+Attr_A_089, habit: is fierce, 习性: 是凶猛的
+Attr_A_090, habit: is friendly, 习性: 是友好的
+Attr_A_091, habit: is timid, 习性: 是胆小的
+Attr_A_092, habit: is smart, 习性: 是聪明的
+Attr_A_093, habit: is active, 习性: 是活跃的
+Attr_A_094, habit: is nocturnal, 习性: 是夜间活动的
+Attr_A_095, habit: can hibernate, 习性: 会冬眠
+Attr_A_096, habit: is the predator, 习性: 是捕食者
+Attr_A_097, habit: is the scavenger, 习性: 是食腐动物
+Attr_A_098, habit: lives in groups, 习性: 是群居动物
+Attr_A_099, habit: lives in solitary, 习性: 是独行动物
+Attr_A_100, habit: lives in nests, 习性: 是巢居动物
+Attr_A_101, habit: is noisy, 习性: 是吵闹的
+Attr_A_102, habit: is quiet, 习性: 是安静的
+Attr_A_103, habit: is warm-blooded, 习性: 是恒温动物
+Attr_A_104, habit: is cold-blooded, 习性: 是冷血动物
+Attr_A_105, habit: is venomous, 习性: 是有毒的
+Attr_A_106, habit: can milk, 习性: 能产奶
+Attr_A_107, habitat: lives in the arctic, 栖息地: 生活在北极
+Attr_A_108, habitat: lives in coastal places, 栖息地: 生活在沿海陆地
+Attr_A_109, habitat: lives in the desert, 栖息地: 生活在沙漠
+Attr_A_110, habitat: lives in the bush, 栖息地: 生活在灌木从中
+Attr_A_111, habitat: lives in the plains, 栖息地: 生活在平原
+Attr_A_112, habitat: lives in the forest, 栖息地: 生活在森林中
+Attr_A_113, habitat: lives in fields, 栖息地: 生活在田野里
+Attr_A_114, habitat: lives in the jungle, 栖息地: 生活在丛林中
+Attr_A_115, habitat: lives in mountains, 栖息地: 生活在山中
+Attr_A_116, habitat: lives in the ocean, 栖息地: 生活在海洋里
+Attr_A_117, habitat: lives on the ground, 栖息地: 生活在地面上
+Attr_A_118, habitat: lives in water, 栖息地: 生活在水里
+Attr_A_119, habitat: lives in trees, 栖息地: 生活在树上
+Attr_A_120, habitat: lives in the cave, 栖息地: 生活在洞穴里
+Attr_A_121, habitat: is domestic, 栖息地: 是家养动物
+Attr_A_122, habitat: is endangered, 栖息地: 是濒临灭绝的动物
+Attr_A_123, habitat: lives in the traveling, 栖息地: 是迁徙动物
+Attr_F_001, outside color: is black, 外表颜色: 是黑色的
+Attr_F_002, outside color: is white, 外表颜色: 是白色的
+Attr_F_003, outside color: is blue, 外表颜色: 是蓝色的
+Attr_F_004, outside color: is cyan, 外表颜色: 是青色的
+Attr_F_005, outside color: is brown, 外表颜色: 是棕色的
+Attr_F_006, outside color: is gray, 外表颜色: 是灰色的
+Attr_F_007, outside color: is orange, 外表颜色: 是橙色的
+Attr_F_008, outside color: is red, 外表颜色: 是红色的
+Attr_F_009, outside color: is violet, 外表颜色: 是紫色的
+Attr_F_010, outside color: is green, 外表颜色: 是绿色的
+Attr_F_011, outside color: is yellow, 外表颜色: 是黄色的
+Attr_F_012, outside color: is transparent, 外表颜色: 是透明的
+Attr_F_013, size: is small (compared to apples), 大小: 是小的（比苹果小）
+Attr_F_014, size: is middle (compared to apples), 大小: 是中等的（与苹果近似大小）
+Attr_F_015, size: is big (compared to apples), 大小: 是大的（比苹果大）
+Attr_F_016, shape: is globular, 形状: 是球形的
+Attr_F_017, shape: is ellipsoidal, 形状: 是椭球形的
+Attr_F_018, shape: is cubic, 形状: 是立方体形的
+Attr_F_019, shape: is star-shaped, 形状: 是星形的
+Attr_F_020, shape: is long, 形状: 是长的
+Attr_F_021, taste: tastes sweet, 味道: 味道是甜的
+Attr_F_022, taste: tastes bitter, 味道: 味道是苦的
+Attr_F_023, taste: tastes sour, 味道: 味道是酸的
+Attr_F_024, taste: tastes spicy, 味道: 味道是辣的
+Attr_F_025, taste: tastes puckery, 味道: 味道是涩的
+Attr_F_026, smell: is smelly, 气味: 是气味难闻
+Attr_F_027, smell: is fragrant, 气味: 是有香味的
+Attr_F_028, marking: has patches, 斑纹: 有块状斑纹
+Attr_F_029, marking: has spots, 斑纹: 有点状斑纹
+Attr_F_030, marking: has stripes, 斑纹: 有条状斑纹
+Attr_F_031, epidermis: is hairy, 表皮: 是有毛的
+Attr_F_032, epidermis: is smooth, 表皮: 是光滑的
+Attr_F_033, epidermis: is rough, 表皮: 是粗糙的
+Attr_F_034, epidermis: is angular, 表皮: 是有棱角的
+Attr_F_035, epidermis: is barbed, 表皮: 是有刺的
+Attr_F_036, epidermis: has peel, 表皮: 有皮
+Attr_F_037, epidermis: has crust, 表皮: 有壳
+Attr_F_038, current state: is complete, 当前状态: 是完整的
+Attr_F_039, current state: is shredded, 当前状态: 是被切开的
+Attr_F_040, current state: is peeled, 当前状态: 是被削了皮的
+Attr_F_041, current state: is shelled, 当前状态: 是被剥了壳的
+Attr_F_042, current state: is raw, 当前状态: 是原生的（未被加工过的）
+Attr_F_043, current state: has been processed, 当前状态: 是被加工过的
+Attr_F_044, hardness: is soft, 硬度: 是软的
+Attr_F_045, hardness: is hard, 硬度: 是硬的
+Attr_F_046, edibility: is common, 食用性: 是常见的
+Attr_F_047, edibility: is rare, 食用性: 是罕见的
+Attr_F_048, edibility: can be eaten directly, 食用性: 可直接食用的（不需要加工）
+Attr_F_049, edibility: has a high water content, 食用性: 含水量高
+Attr_F_050, edibility: needs to be skinned, 食用性: 需要剥皮
+Attr_F_051, edibility: has nutlets, 食用性: 有果核
+Attr_F_052, edibility: has seeds, 食用性: 有籽
+Attr_F_053, growth: is tropical, 生长: 产于热带
+Attr_F_054, growth: grows on trees, 生长: 长在树上
+Attr_F_055, growth: grows on the ground, 生长: 长在地上
+Attr_F_056, medicinal property: is cool or cold, 药性: 是寒、凉性水果
+Attr_F_057, medicinal property: is warm or hot, 药性: 是温、热性水果
+Attr_F_058, medicinal property: is mild, 药性: 是平性水果
+Attr_V_001, color: is black, 颜色: 是黑色的
+Attr_V_002, color: is white, 颜色: 是白色的
+Attr_V_003, color: is blue, 颜色: 是蓝色的
+Attr_V_004, color: is cyan, 颜色: 是青色的
+Attr_V_005, color: is brown, 颜色: 是棕色的
+Attr_V_006, color: is gray, 颜色: 是灰色的
+Attr_V_007, color: is orange, 颜色: 是橙色的
+Attr_V_008, color: is red, 颜色: 是红色的
+Attr_V_009, color: is violet, 颜色: 是紫色的
+Attr_V_010, color: is green, 颜色: 是绿色的
+Attr_V_011, color: is yellow, 颜色: 是黄色的
+Attr_V_012, size: is small (compared to cars), 大小: 是小的（比汽车小）
+Attr_V_013, size: is middle (compared to cars), 大小: 是中等的（与汽车近似大小）
+Attr_V_014, size: is big (compared to cars), 大小: 是大的（比汽车大）
+Attr_V_015, weight: weighs tons, 重量: 有数吨重
+Attr_V_016, shape: is globular, 形状: 是球形的
+Attr_V_017, shape: is ellipsoidal, 形状: 是椭球形的
+Attr_V_018, shape: is cubic, 形状: 是立方体形的
+Attr_V_019, shape: is long, 形状: 是长的
+Attr_V_020, speed: moves slowly, 速度: 速度慢
+Attr_V_021, speed: moves fast, 速度: 速度快
+Attr_V_022, parts: has doors, 组成部件: 有门
+Attr_V_023, parts: has seats, 组成部件: 有座位
+Attr_V_024, parts: has windows, 组成部件: 有窗户
+Attr_V_025, parts: has a jet engine, 组成部件: 有喷气发动机
+Attr_V_026, parts: has a engine, 组成部件: 有发动机
+Attr_V_027, parts: has a sail, 组成部件: 有帆
+Attr_V_028, parts: has a mast, 组成部件: 有桅杆
+Attr_V_029, parts: has a horn, 组成部件: 有喇叭
+Attr_V_030, parts: has a steering wheel, 组成部件: 有方向盘
+Attr_V_031, parts: has a track, 组成部件: 有轨道
+Attr_V_032, parts: has a brake, 组成部件: 有刹车
+Attr_V_033, parts: has a number plate, 组成部件: 有牌照
+Attr_V_034, parts: has a sunroof, 组成部件: 有天窗
+Attr_V_035, parts: has a propeller, 组成部件: 有螺旋桨
+Attr_V_036, parts: has weapons, 组成部件: 携带武器
+Attr_V_037, parts: has a cable, 组成部件: 有缆绳
+Attr_V_038, parts: has two wheels, 组成部件: 有两个轮子
+Attr_V_039, parts: has three wheels, 组成部件: 有三个轮子
+Attr_V_040, parts: has four wheels, 组成部件: 有四个轮子
+Attr_V_041, parts: has more than four wheels, 组成部件: 有多于四个轮子
+Attr_V_042, parts: has armors, 组成部件: 有装甲的
+Attr_V_043, parts: has lights, 组成部件: 有照明灯
+Attr_V_044, function: can dive, 功能: 能潜水
+Attr_V_045, function: can fly , 功能: 能以飞
+Attr_V_046, function: can float, 功能: 能漂浮水面
+Attr_V_047, function: can move, 功能: 能以移动
+Attr_V_048, function: can be driven, 功能: 能被驾驶
+Attr_V_049, function: can carry a small number (≤10) of passengers, 功能: 能载少量(≤10)乘客
+Attr_V_050, function: can carry a larger number (＞10)  of passengers, 功能: 能载大量(＞10)乘客
+Attr_V_051, function: can carry a small quantity (≤ 1 ton) of goods, 功能: 能载少量(≤ 1 吨)货物
+Attr_V_052, function: can carry a large quantity (＞ 1 tons) of goods, 功能: 能载大量(＞ 1 吨)货物
+Attr_V_053, aim: is for cleaning, 目的: 可用于清洁
+Attr_V_054, aim: is for engineering, 目的: 可用于工程使用
+Attr_V_055, aim: is for rescue, 目的: 可用于救援
+Attr_V_056, aim: is for civil use, 目的: 可用于民用
+Attr_V_057, aim: is for military, 目的: 可用于军事
+Attr_V_058, aim: is for family, 目的: 可用于家庭使用
+Attr_V_059, aim: is for sports, 目的: 可用于运动
+Attr_V_060, power: consumes electricity, 能源: 消耗电
+Attr_V_061, power: consumes gasoline, 能源: 消耗汽油
+Attr_V_062, power: consumes diesel oil, 能源: 消耗柴油
+Attr_V_063, power: consumes special fuel, 能源: 消耗特殊燃料
+Attr_V_064, power: consumes wind power, 能源: 消耗风能
+Attr_V_065, power: consumes manpower, 能源: 需要人力驱动
+Attr_V_066, usage scenarios: can be used on urban roads, 使用场景: 可在城市道路上使用
+Attr_V_067, usage scenarios: can be used on rural roads, 使用场景: 可在乡村道路上使用
+Attr_V_068, usage scenarios: can be used on the track, 使用场景: 可在跑道或轨道上使用
+Attr_V_069, usage scenarios: can be used in the river, 使用场景: 可在河流中使用
+Attr_V_070, usage scenarios: can be used in the lake, 使用场景: 可在湖泊中使用
+Attr_V_071, usage scenarios: can be used in the sea, 使用场景: 可在海洋中使用
+Attr_V_072, usage scenarios: can be used in the sky, 使用场景: 可在天空中使用
+Attr_V_073, usage scenarios: can be used in the space, 使用场景: 可在太空中使用
+Attr_V_074, safety: is safe, 安全性: 是安全的
+Attr_V_075, safety: is dangerous, 安全性: 是危险的
+Attr_V_076, material: is made of metal, 材质: 是金属造的
+Attr_V_077, material: is made of plastic, 材质: 是塑料造的
+Attr_V_078, material: is made of wood, 材质: 是木材造的
+Attr_V_079, material: is made of cloth, 材质: 是布做的
+Attr_V_080, price: is cheap, 价格: 是便宜的
+Attr_V_081, price: is expensive, 价格: 是贵的
+Attr_E_001, color: is black, 颜色: 是黑色的
+Attr_E_002, color: is white, 颜色: 是白色的
+Attr_E_003, color: is blue, 颜色: 是蓝色的
+Attr_E_004, color: is cyan, 颜色: 是青色的
+Attr_E_005, color: is brown, 颜色: 是棕色的
+Attr_E_006, color: is gray, 颜色: 是灰色的
+Attr_E_007, color: is orange, 颜色: 是橙色的
+Attr_E_008, color: is red, 颜色: 是红色的
+Attr_E_009, color: is violet, 颜色: 是紫色的
+Attr_E_010, color: is green, 颜色: 是绿色的
+Attr_E_011, color: is yellow, 颜色: 是黄色的
+Attr_E_012, size: is small (compared to a mobile phone), 大小: 是小的（比手机小）
+Attr_E_013, size: is middle (compared to a mobile phone), 大小: 是中等的（与手机近似大小）
+Attr_E_014, size: is big (compared to a mobile phone), 大小: 是大的（比手机大）
+Attr_E_015, weight: weighs kilograms, 重量: 有数千克重
+Attr_E_016, shape: is cubic, 形状: 是立方体形的
+Attr_E_017, shape: is cylindrical, 形状: 是圆柱形的
+Attr_E_018, shape: is schistose, 形状: 是片状的
+Attr_E_019, shape: is flat, 形状: 是扁平的
+Attr_E_020, parts: has a small screen (≤10 inches), 组成部件: 有较小屏幕（≤10吋）
+Attr_E_021, parts: has a large screen (＞10 inches), 组成部件: 有较大屏幕（＞10吋）
+Attr_E_022, parts: has an audio, 组成部件: 有发声装置
+Attr_E_023, parts: has a wrist band, 组成部件: 有腕带
+Attr_E_024, parts: has a motor, 组成部件: 有电机
+Attr_E_025, parts: has a fan, 组成部件: 有风扇
+Attr_E_026, parts: has only one usb interface, 组成部件: 只有一个USB接口
+Attr_E_027, parts: has many usb interfaces, 组成部件: 有很多（＞1）USB接口
+Attr_E_028, parts: has only one network interface, 组成部件: 只有一个网线接口
+Attr_E_029, parts: has many network interfaces, 组成部件: 有很多（＞1）网线接口
+Attr_E_030, parts: has a battery, 组成部件: 有电池
+Attr_E_031, parts: has a camera, 组成部件: 有摄像头（或相机）
+Attr_E_032, parts: has keys, 组成部件: 有按键
+Attr_E_033, parts: has a headphone jack, 组成部件: 有耳机插口
+Attr_E_034, parts: has volume control buttons, 组成部件: 有音量调节键
+Attr_E_035, parts: has an antenna, 组成部件: 有外置天线
+Attr_E_036, parts: has a plug, 组成部件: 有（电源）插头
+Attr_E_037, parts: has a touch pad, 组成部件: 有触控板
+Attr_E_038, parts: has indicator lights, 组成部件: 有指示灯
+Attr_E_039, function: can give out lights, 功能: 能发光
+Attr_E_040, function: can give out sound, 功能: 能发声
+Attr_E_041, function: can refrigerate, 功能: 能制冷
+Attr_E_042, function: can heat, 功能: 能制热
+Attr_E_043, function: can transmit signal, 功能: 能发射信号
+Attr_E_044, function: can communicate in a short distance, 功能: 能近距离内通讯
+Attr_E_045, function: can communicate in a long distance, 功能: 能远距离内通讯
+Attr_E_046, function: can photograph, 功能: 能拍照或摄像的
+Attr_E_047, function: can play music, 功能: 能播放音乐
+Attr_E_048, function: can play videos, 功能: 能播放视频
+Attr_E_049, function: can storage data, 功能: 能存储数据
+Attr_E_050, function: can be located, 功能: 能被定位
+Attr_E_051, function: can show characters, 功能: 能显示文字
+Attr_E_052, aim: is for entertainment, 目的: 可用于娱乐
+Attr_E_053, aim: is for business, 目的: 可用于商业
+Attr_E_054, aim: is for communication, 目的: 可用于通讯
+Attr_E_055, aim: is for family, 目的: 可用于家庭使用
+Attr_E_056, aim: is for office use, 目的: 可用于办公
+Attr_E_057, aim: is for display, 目的: 可用于展示
+Attr_E_058, aim: is for safety, 目的: 可用于安防
+Attr_E_059, aim: is for cleaning, 目的: 可用于清洁
+Attr_E_060, aim: is for personal, 目的: 可用于个人使用
+Attr_E_061, safety: is safe, 安全性: 是安全的
+Attr_E_062, safety: is dangerous, 安全性: 是危险的
+Attr_E_063, material: is made of metal, 材质: 是金属造的
+Attr_E_064, material: is made of plastic, 材质: 是塑料造的
+Attr_E_065, material: is made of glass, 材质: 是玻璃造的
+Attr_E_066, existence: is rare, 存在: 是罕见的
+Attr_E_067, existence: is common, 存在: 是常见的
+Attr_E_068, existence: is movable, 存在: 是可被随时移动的
+Attr_E_069, existence: is fixed, 存在: 是固定安装的
+Attr_E_070, sound: is noisy, 声音: 会发出噪声
+Attr_E_071, sound: is quiet, 声音: 是安静的
+Attr_E_072, usage mode: is handheld, 使用方式: 是可以手持的
+Attr_E_073, usage mode: is head-mounted, 使用方式: 是可以头戴的
+Attr_E_074, power: is a high-power (>100 w) device , 功率: 是大功率设备
+Attr_E_075, power: is a low-power (≤100 w) device, 功率: 是小功率设备
+Attr_H_001, color: is black, 颜色: 是黑色的
+Attr_H_002, color: is brown, 颜色: 是棕褐色的
+Attr_H_003, color: is golden, 颜色: 是金黄色的
+Attr_H_004, fitness: fits people with small eyes, 大小: 适合小眼睛的人
+Attr_H_005, fitness: fits people with moustache, 大小: 适合有小胡子的人
+Attr_H_006, fitness: fits people with beard, 大小: 适合有络腮胡子的人
+Attr_H_007, fitness: fits fair-skinned people, 大小: 适合皮肤白皙的人
+Attr_H_008, fitness: fits people with a pointed nose, 大小: 适合尖尖鼻子的人
+Attr_H_009, fitness: fits people with a hat, 大小: 适合戴帽子的人
+Attr_H_010, fitness: fits people with ear rings, 大小: 适合戴耳环的人
+Attr_H_011, fitness: fits people with heavy make-up, 大小: 适合化浓妆的人
+Attr_H_012, feeling: is easy to be messy, 感觉: 容易变乱
+Attr_H_013, feeling: is gorgeous, 感觉: 是华丽的
+Attr_H_014, feeling: is simple, 感觉: 是简约的
+Attr_H_015, feeling: is elegant, 感觉: 是否优雅
+Attr_H_016, feeling: is cute, 感觉: 是否可爱
+Attr_H_017, feeling: is sexy, 感觉: 是否性感
+Attr_H_018, feeling: is mature, 感觉: 是否成熟
+Attr_H_019, feeling: is cool, 感觉: 是否酷炫
+Attr_H_020, feeling: is pure, 感觉: 是否纯净
+Attr_H_021, feeling: is lively, 感觉: 是否活泼
+Attr_H_022, feeling: is naive, 感觉: 是否幼稚

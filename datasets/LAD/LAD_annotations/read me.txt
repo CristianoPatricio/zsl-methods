@@ -1,0 +1,57 @@
+This dataset is constructed by Sinovation Ventures, Peking University (Prof. Yizhou Wang) and Fudan University (Prof. Yanwei Fu). 
+There are 7 txt annotation files, namely, images.txt, label_list.txt, attribute_list.txt, attributes.txt, attributes_per_class.txt, split_zsl.txt and split_supervisedlearning.txt.
+
+
+1. images.txt
+This file contains the annotation (image ID, label ID, bounding box and the path) of each image.  
+For instance: 018429, Label_A_03, [81, 213, 613, 616], images/A_bear/4464d4fe981ef356759c6cee7205f547.jpg
+The first term "018429" is the image ID.
+The second term "Label_A_03" is the label ID.
+The third term "[81, 213, 613, 616]" is the bounding box.
+The fourth term "images/A_bear/4464d4fe981ef356759c6cee7205f547.jpg" is the image path.
+
+2. label_list.txt
+This file contains the list of all labels.
+For instance: Label_A_03, bear, 熊
+The first term "Label_A_03" is the label ID.
+The second term "bear" is the English name of the label.
+The third term "熊" is the Chinese name of the label.
+
+3. attribute_list.txt
+This file contains the list of all attributes.
+For instance: Attr_A_005, color: is brown, 颜色: 是棕色的
+The first term "Attr_A_005" is the attribute ID.
+The second term "color: is brown" is the English name of the attribute. ": " splits the domain and the attribute.
+The third term "颜色: 是棕色的" is the Chinese name of the attribute. ": " splits the domain and the attribute.
+
+4. attributes.txt
+This file contains attribute annotations of selected images. Each class has 20 images annotated with attributes.
+For instance: 
+Label_A_03, images/A_bear/4464d4fe981ef356759c6cee7205f547.jpg, [  0  0  0  0  1  0  0  0  0  0  0  0  1  0  1  0  0  0  0  0  0  0  1  0  0  0  0  0  1  0  1  0  1  0  0  0  0  0  1  1  0  0  1  1  1  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  1  0  1  1  0  1  1  0  1  0  0  1  1  1  1  1  1  1  1  1  0  1  0  1  0  1  1  0  0  0  1  0  1  1  0  0  1  0  0  1  1  0  0  1  0  0  0  0  1  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  ]
+The first term "Label_A_03" is the label ID.
+The second term "images/A_bear/4464d4fe981ef356759c6cee7205f547.jpg" is the image path.
+The next 359 binary values are attribute annotations with the same order as the attribute list.
+
+5. attributes_per_class.txt
+This file contains the class-level attribute annotation of each class. The values are calculated by averaging the annotations of 20 images in each class.
+For instance:
+Label_A_03, [  0.20  0.15  0.00  0.00  0.70  0.30  0.00  0.00  0.00  0.00  0.30  0.00  1.00  0.00  1.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  1.00  0.00  0.00  0.00  0.00  0.00  1.00  0.00  1.00  0.00  1.00  0.00  0.00  0.00  0.00  0.00  1.00  1.00  0.00  0.00  1.00  1.00  1.00  0.00  1.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  1.00  1.00  0.00  1.00  1.00  0.00  1.00  1.00  0.00  1.00  0.00  0.00  1.00  0.35  1.00  1.00  1.00  1.00  1.00  1.00  1.00  0.00  1.00  0.00  1.00  0.00  1.00  1.00  0.00  0.00  0.00  1.00  0.00  1.00  1.00  0.00  0.00  1.00  0.00  0.00  1.00  1.00  0.00  0.00  1.00  0.15  0.00  0.00  0.00  0.40  0.15  0.00  0.15  0.15  0.00  0.95  0.00  0.05  0.00  0.00  0.05  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  ]
+The first term "Label_A_03" is the label ID.
+The next 359 values are class-level attributes with the same order as the attribute list.
+
+6. split_zsl.txt
+This file contains 5 splits of seen/unseen classes. 
+For instance:
+Unseen_List_1: Label_A_14, Label_A_35, Label_A_05, Label_A_41, Label_A_31, Label_A_29, Label_A_39, Label_A_02, Label_A_08, Label_A_20, Label_F_25, Label_F_34, Label_F_03, Label_F_09, Label_F_49, Label_F_29, Label_F_10, Label_F_43, Label_F_31, Label_F_17, Label_V_27, Label_V_45, Label_V_33, Label_V_20, Label_V_04, Label_V_05, Label_V_47, Label_V_16, Label_V_43, Label_V_07, Label_E_02, Label_E_25, Label_E_48, Label_E_05, Label_E_23, Label_E_31, Label_E_06, Label_E_35, Label_E_20, Label_E_41, Label_H_19, Label_H_06, Label_H_11, Label_H_18, Label_H_20, Label_H_09
+Each line contains all unseen classes in a split, and the rest classes are seen classes.
+
+7. split_supervisedlearning.txt
+This file contains the split of train+val and test images used for supervised learning experiments.
+For instance:
+039733
+Each line contains the image id. The notation 'train+val:' and 'test:' denotes the beginning of the train+val and test data respectively.
+
+For more details, please refer to the paper "A Large-scale Attribute Dataset for Zero-shot Learning". 
+Authors: Bo Zhao, Yanwei Fu, Rui Liang, Jiahong Wu, Yonggang Wang, Yizhou Wang
+Email Address: bozhaonanjing@gmail.com
+Date: July 20, 2018
