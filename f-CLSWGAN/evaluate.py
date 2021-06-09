@@ -27,7 +27,6 @@ parser.add_argument('--validation', action='store_true', default=False, help='en
 parser.add_argument('--batch_size', type=int, default=64, help='input batch size')
 parser.add_argument('--nclass_all', type=int, default=50, help='number of all classes')
 parser.add_argument('--split_no', type=str, default='', help="Split number in case of LAD dataset.")
-parser.add_argument('--syn_att', type=str, default='', help="Split number in case of LAD dataset.")
 
 opt = parser.parse_args()
 

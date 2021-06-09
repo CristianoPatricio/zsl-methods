@@ -52,7 +52,6 @@ parser.add_argument('--start_epoch', type=int, default=0)
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--nclass_all', type=int, default=50, help='number of all classes')
 parser.add_argument('--split_no', type=str, default='', help="Split number in case of LAD dataset.")
-parser.add_argument('--syn_att', type=str, default='', help="Split number in case of LAD dataset.")
 
 opt = parser.parse_args()
 
