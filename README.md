@@ -1,4 +1,9 @@
-# zsl-methods
+# :chart_with_upwards_trend: *Evaluation Framework for Zero-Shot Learning Methods*
+
+---
+
+# 1. Datasets
+# 2. Methods
 
 ## 1. **ESZSL**
 
@@ -36,6 +41,7 @@ Name: test(weights)
 | CUB | Alpha=2, Gamma=0 | 51.3 | s=61.7    u=13.5  H=**22.2** |
 | SUN | Alpha=2, Gamma=2 | 52.3 | s=29.0    u=12.6  H=**17.5** |
 | aPY | Alpha=3, Gamma=-1 | 38.5 | s=80.2   u=2.4   H=**4.7** |
+| LAD | Alpha=3, Gamma=1 | 51.9 | s=67.4   u=5.7   H=**10.5** |
 
 ## 2. **SAE**
 
@@ -80,6 +86,7 @@ Name: test(weights_zsl, weights_gzsl, setting)
 | CUB     |   V2S   |  100   |  80   | 39.1 | s=49.4 u=14.0    H= **21.9**
 | SUN     |   V2S   |  0.32  |  0.32 | 52.4 | s=24.7    u=16.8  H=**20.0**
 | aPY     |   V2S   |  2.0   |  0.16 | 15.9 | s=18.1    u=0.7  H=**1.4**
+| LAD     |   V2S   |  51.2   |  51.2 | 42.4 | s=57.2   u=5.7  H=**10.4**
 
 | Dataset | Setting | Lambda (ZSL) | Lambda (GZSL) | Per-class Accuracy (%) | GZSL (s, u, H - %) |
 | ------- | :------:| :----------: | :-----------: | :--------------------: | :---------------- |
@@ -88,6 +95,7 @@ Name: test(weights_zsl, weights_gzsl, setting)
 | CUB     |   S2V   |  0.2   |  0.2   | 45.6 | s=57.0 u=16.9    H= **26.1**
 | SUN     |   S2V   |  0.16  |  0.08 | 60.2 | s=31.5    u=18.8  H=**23.6**
 | aPY     |   S2V   |  4.0   |  2.56 | 16.3 | s=70.1    u=0.7  H=**1.5**
+| LAD     |   S2V   |  6.4   |  6.4 |  51.0 | s=    u=  H=****
 
 ## 3. **DEM**
 
@@ -122,6 +130,7 @@ Name: train(batch_size)
 | CUB     |   1600   |  1e-2   |  1e-4 | 46.8 | s=44.7  u=19.8   H=**27.5**
 | SUN     |   1600   |  1e-5   |  1e-4 | 62.8 | s=37.4  u=20.3   H=**26.3**
 | aPY     |   1600   |  1e-4  |   1e-4 | 34.8 | s=76.7  u=12.3   H=**21.2**
+| LAD     |   1600   |  1e-4  |   1e-4 |  | s=  u=   H=****
 
 ## 4. f-CLSWGAN
 
