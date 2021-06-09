@@ -6,7 +6,7 @@ def SAE_helper(dataset_path, filename, lamb_ZSL, lamb_GZSL, setting, att_split, 
                default_att_split):
     dataset_path = dataset_path if dataset_path is not None else "/home/cristianopatricio/Documents/Datasets" \
                                                                  "/xlsa17/data/"
-    filename = filename if filename is not None else "res101"
+    filename = filename if filename is not None else "ResNet101"
     lamb_ZSL = lamb_ZSL if lamb_ZSL is not None else default_lamb_ZSL
     lamb_GZSL = lamb_GZSL if lamb_GZSL is not None else default_lamb_GZSL
     setting = setting if setting is not None else "V2S"
@@ -199,7 +199,7 @@ def SAE(dataset=None, dataset_path=None, filename=None, lamb_ZSL=None, lamb_GZSL
 def ESZSL_helper(dataset_path, filename, alpha, gamma, att_split, default_alpha, default_gamma, default_att_split):
     dataset_path = dataset_path if dataset_path is not None else "/home/cristianopatricio/Documents/Datasets" \
                                                                  "/xlsa17/data/"
-    filename = filename if filename is not None else "res101.mat"
+    filename = filename if filename is not None else "ResNet101"
     alpha = alpha if alpha is not None else default_alpha
     gamma = gamma if gamma is not None else default_gamma
     att_split = att_split if att_split is not None else default_att_split
@@ -305,7 +305,7 @@ def DEM_helper(dataset_path, filename, lamb, lr, batch_size, hidden_dim, default
                default_hidden_dim):
     dataset_path = dataset_path if dataset_path is not None else "/home/cristianopatricio/Documents/Datasets" \
                                                                  "/xlsa17/data/"
-    filename = filename if filename is not None else "res101.mat"
+    filename = filename if filename is not None else "ResNet101"
     lamb = lamb if lamb is not None else default_lamb
     lr = lr if lr is not None else default_lr
     batch_size = batch_size if batch_size is not None else default_batch_size
@@ -436,13 +436,13 @@ def DEM(dataset=None, dataset_path=None, filename=None, lamb=None, lr=None, batc
 
 def f_CLSWGAN_Helper(dataroot, image_embedding, class_embedding, batch_size, resSize, attSize, nepoch, lr, beta1,
                      split_no,
-                     cls_weight, syn_num, ngh, ndh, lambda1, classifier_checkpoint, syn_att, nz,
+                     cls_weight, syn_num, ngh, ndh, lambda1, classifier_checkpoint, nz,
                      default_resSize, default_attSize, default_batch_size, default_nepoch, default_lr, default_beta1,
                      default_split_no, default_cls_weight, default_syn_num, default_ngh, default_ndh, default_lambda1,
-                     default_classifier_checkpoint, default_syn_att, default_nz):
+                     default_classifier_checkpoint, default_nz):
     dataroot = dataroot if dataroot is not None else "/home/cristianopatricio/Documents/Datasets" \
                                                      "/xlsa17/data/"
-    image_embedding = image_embedding if image_embedding is not None else "res101"
+    image_embedding = image_embedding if image_embedding is not None else "ResNet101"
     class_embedding = class_embedding if class_embedding is not None else "att"
     resSize = resSize if resSize is not None else default_resSize
     attSize = attSize if attSize is not None else default_attSize
@@ -457,22 +457,21 @@ def f_CLSWGAN_Helper(dataroot, image_embedding, class_embedding, batch_size, res
     ndh = ndh if ndh is not None else default_ndh
     lambda1 = lambda1 if lambda1 is not None else default_lambda1
     classifier_checkpoint = classifier_checkpoint if classifier_checkpoint is not None else default_classifier_checkpoint
-    syn_att = syn_att if syn_att is not None else default_syn_att
     nz = nz if nz is not None else default_nz
 
     return dataroot, image_embedding, class_embedding, resSize, attSize, batch_size, nepoch, lr, beta1, split_no, cls_weight, \
-           syn_num, ngh, ndh, lambda1, classifier_checkpoint, syn_att, nz
+           syn_num, ngh, ndh, lambda1, classifier_checkpoint, nz
 
 
 def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None, split_no=None, attSize=None,
               resSize=None, nepoch=None, modeldir=None,
               lr=None, beta1=None, batch_size=None, cls_weight=None, syn_num=None, ngh=None, ndh=None, lambda1=None,
-              classifier_checkpoint=None, syn_att=None, nz=None):
+              classifier_checkpoint=None, nz=None):
     if dataset == "AWA2" or dataset == "AWA1":
 
         [dataroot, image_embedding, class_embedding, resSize, attSize, batch_size, nepoch, lr, beta1, split_no,
          cls_weight, \
-         syn_num, ngh, ndh, lambda1, classifier_checkpoint, syn_att, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
+         syn_num, ngh, ndh, lambda1, classifier_checkpoint, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
                                                                                             class_embedding, \
                                                                                             batch_size, resSize,
                                                                                             attSize, nepoch, lr, beta1,
@@ -480,7 +479,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             cls_weight, syn_num, ngh,
                                                                                             ndh, lambda1,
                                                                                             classifier_checkpoint,
-                                                                                            syn_att, nz,
+                                                                                            nz,
                                                                                             default_resSize=2048,
                                                                                             default_attSize=85,
                                                                                             default_batch_size=100,
@@ -494,7 +493,6 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             default_ndh=4096,
                                                                                             default_lambda1=10,
                                                                                             default_classifier_checkpoint=49,
-                                                                                            default_syn_att='_',
                                                                                             default_nz=85)
 
         modeldir = os.path.join(os.getcwd(), "f-CLSWGAN/models_classifier_" + str(dataset))
@@ -516,7 +514,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Train WGAN
         os.system("python f-CLSWGAN/train_wgan.py --manualSeed 9182 --dataset " + str(dataset) + " --split_no '" + str(
             split_no) + \
-                  "' --syn_att '" + str(syn_att) + "' --cls_weight " + str(
+                  "' --cls_weight " + str(
             cls_weight) + " --preprocessing --val_every 1 " + \
                   "--lr " + str(lr) + " --image_embedding " + str(image_embedding) + " --class_embedding " + str(
             class_embedding) + \
@@ -535,14 +533,13 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Evaluate
         os.system("python f-CLSWGAN/evaluate.py --dataset " + str(dataset) + " --dataroot " + str(
             dataroot) + " --image_embedding " + \
-                  str(image_embedding) + " --split_no '" + str(split_no) + "' --syn_att '" + str(
-            syn_att) + "' --nclass_all " + str(nclass_all))
+                  str(image_embedding) + " --split_no '" + str(split_no) + "' --nclass_all " + str(nclass_all))
 
     elif dataset == "CUB":
 
         [dataroot, image_embedding, class_embedding, resSize, attSize, batch_size, nepoch, lr, beta1, split_no,
          cls_weight, \
-         syn_num, ngh, ndh, lambda1, classifier_checkpoint, syn_att, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
+         syn_num, ngh, ndh, lambda1, classifier_checkpoint, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
                                                                                             class_embedding, \
                                                                                             batch_size, resSize,
                                                                                             attSize, nepoch, lr, beta1,
@@ -550,7 +547,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             cls_weight, syn_num, ngh,
                                                                                             ndh, lambda1,
                                                                                             classifier_checkpoint,
-                                                                                            syn_att, nz,
+                                                                                            nz,
                                                                                             default_resSize=2048,
                                                                                             default_attSize=312,
                                                                                             default_batch_size=100,
@@ -564,7 +561,6 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             default_ndh=4096,
                                                                                             default_lambda1=10,
                                                                                             default_classifier_checkpoint=49,
-                                                                                            default_syn_att='_',
                                                                                             default_nz=312)
 
         modeldir = os.path.join(os.getcwd(), "f-CLSWGAN/models_classifier_" + str(dataset))
@@ -586,7 +582,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Train WGAN
         os.system("python f-CLSWGAN/train_wgan.py --manualSeed 9182 --dataset " + str(dataset) + " --split_no '" + str(
             split_no) + \
-                  "' --syn_att '" + str(syn_att) + "' --cls_weight " + str(
+                  "' --cls_weight " + str(
             cls_weight) + " --preprocessing --val_every 1 " + \
                   "--lr " + str(lr) + " --image_embedding " + str(image_embedding) + " --class_embedding " + str(
             class_embedding) + \
@@ -605,14 +601,13 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Evaluate
         os.system("python f-CLSWGAN/evaluate.py --dataset " + str(dataset) + " --dataroot " + str(
             dataroot) + " --image_embedding " + \
-                  str(image_embedding) + " --split_no '" + str(split_no) + "' --syn_att '" + str(
-            syn_att) + "' --nclass_all " + str(nclass_all))
+                  str(image_embedding) + " --split_no '" + str(split_no) +  "' --nclass_all " + str(nclass_all))
 
     elif dataset == "SUN":
 
         [dataroot, image_embedding, class_embedding, resSize, attSize, batch_size, nepoch, lr, beta1, split_no,
          cls_weight, \
-         syn_num, ngh, ndh, lambda1, classifier_checkpoint, syn_att, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
+         syn_num, ngh, ndh, lambda1, classifier_checkpoint, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
                                                                                             class_embedding, \
                                                                                             batch_size, resSize,
                                                                                             attSize, nepoch, lr, beta1,
@@ -620,7 +615,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             cls_weight, syn_num, ngh,
                                                                                             ndh, lambda1,
                                                                                             classifier_checkpoint,
-                                                                                            syn_att, nz,
+                                                                                            nz,
                                                                                             default_resSize=2048,
                                                                                             default_attSize=102,
                                                                                             default_batch_size=100,
@@ -634,7 +629,6 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             default_ndh=4096,
                                                                                             default_lambda1=10,
                                                                                             default_classifier_checkpoint=49,
-                                                                                            default_syn_att='_',
                                                                                             default_nz=102)
 
         modeldir = os.path.join(os.getcwd(), "f-CLSWGAN/models_classifier_" + str(dataset))
@@ -656,7 +650,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Train WGAN
         os.system("python f-CLSWGAN/train_wgan.py --manualSeed 9182 --dataset " + str(dataset) + " --split_no '" + str(
             split_no) + \
-                  "' --syn_att '" + str(syn_att) + "' --cls_weight " + str(
+                  "' --cls_weight " + str(
             cls_weight) + " --preprocessing --val_every 1 " + \
                   "--lr " + str(lr) + " --image_embedding " + str(image_embedding) + " --class_embedding " + str(
             class_embedding) + \
@@ -675,14 +669,13 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Evaluate
         os.system("python f-CLSWGAN/evaluate.py --dataset " + str(dataset) + " --dataroot " + str(
             dataroot) + " --image_embedding " + \
-                  str(image_embedding) + " --split_no '" + str(split_no) + "' --syn_att '" + str(
-            syn_att) + "' --nclass_all " + str(nclass_all))
+                  str(image_embedding) + " --split_no '" + str(split_no) + "' --nclass_all " + str(nclass_all))
 
     elif dataset == "APY":
 
         [dataroot, image_embedding, class_embedding, resSize, attSize, batch_size, nepoch, lr, beta1, split_no,
          cls_weight, \
-         syn_num, ngh, ndh, lambda1, classifier_checkpoint, syn_att, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
+         syn_num, ngh, ndh, lambda1, classifier_checkpoint, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
                                                                                             class_embedding, \
                                                                                             batch_size, resSize,
                                                                                             attSize, nepoch, lr, beta1,
@@ -690,7 +683,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             cls_weight, syn_num, ngh,
                                                                                             ndh, lambda1,
                                                                                             classifier_checkpoint,
-                                                                                            syn_att, nz,
+                                                                                            nz,
                                                                                             default_resSize=2048,
                                                                                             default_attSize=64,
                                                                                             default_batch_size=100,
@@ -704,7 +697,6 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             default_ndh=4096,
                                                                                             default_lambda1=10,
                                                                                             default_classifier_checkpoint=49,
-                                                                                            default_syn_att='_',
                                                                                             default_nz=64)
 
         modeldir = os.path.join(os.getcwd(), "f-CLSWGAN/models_classifier_" + str(dataset))
@@ -726,7 +718,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Train WGAN
         os.system("python f-CLSWGAN/train_wgan.py --manualSeed 9182 --dataset " + str(dataset) + " --split_no '" + str(
             split_no) + \
-                  "' --syn_att '" + str(syn_att) + "' --cls_weight " + str(
+                  "' --cls_weight " + str(
             cls_weight) + " --preprocessing --val_every 1 " + \
                   "--lr " + str(lr) + " --image_embedding " + str(image_embedding) + " --class_embedding " + str(
             class_embedding) + \
@@ -745,14 +737,13 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Evaluate
         os.system("python f-CLSWGAN/evaluate.py --dataset " + str(dataset) + " --dataroot " + str(
             dataroot) + " --image_embedding " + \
-                  str(image_embedding) + " --split_no '" + str(split_no) + "' --syn_att '" + str(
-            syn_att) + "' --nclass_all " + str(nclass_all))
+                  str(image_embedding) + " --split_no '" + str(split_no) + "' --nclass_all " + str(nclass_all))
 
     elif dataset == "LAD":
 
         [dataroot, image_embedding, class_embedding, resSize, attSize, batch_size, nepoch, lr, beta1, split_no,
          cls_weight, \
-         syn_num, ngh, ndh, lambda1, classifier_checkpoint, syn_att, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
+         syn_num, ngh, ndh, lambda1, classifier_checkpoint, nz] = f_CLSWGAN_Helper(dataroot, image_embedding,
                                                                                             class_embedding, \
                                                                                             batch_size, resSize,
                                                                                             attSize, nepoch, lr, beta1,
@@ -760,7 +751,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             cls_weight, syn_num, ngh,
                                                                                             ndh, lambda1,
                                                                                             classifier_checkpoint,
-                                                                                            syn_att, nz,
+                                                                                            nz,
                                                                                             default_resSize=2048,
                                                                                             default_attSize=359,
                                                                                             default_batch_size=100,
@@ -774,7 +765,6 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
                                                                                             default_ndh=4096,
                                                                                             default_lambda1=10,
                                                                                             default_classifier_checkpoint=49,
-                                                                                            default_syn_att='_',
                                                                                             default_nz=359)
 
         modeldir = os.path.join(os.getcwd(), "f-CLSWGAN/models_classifier_" + str(dataset) + str(split_no))
@@ -796,7 +786,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Train WGAN
         os.system("python f-CLSWGAN/train_wgan.py --manualSeed 9182 --dataset " + str(dataset) + " --split_no '" + str(
             split_no) + \
-                  "' --syn_att '" + str(syn_att) + "' --cls_weight " + str(
+                  "' --cls_weight " + str(
             cls_weight) + " --preprocessing --val_every 1 " + \
                   "--lr " + str(lr) + " --image_embedding " + str(image_embedding) + " --class_embedding " + str(
             class_embedding) + \
@@ -815,8 +805,7 @@ def f_CLSWGAN(dataset, dataroot=None, image_embedding=None, class_embedding=None
         # Evaluate
         os.system("python f-CLSWGAN/evaluate.py --dataset " + str(dataset) + " --dataroot " + str(
             dataroot) + " --image_embedding " + \
-                  str(image_embedding) + " --split_no '" + str(split_no) + "' --syn_att '" + str(
-            syn_att) + "' --nclass_all " + str(nclass_all))
+                  str(image_embedding) + " --split_no '" + str(split_no) + "' --nclass_all " + str(nclass_all))
 
 
 ######################################################################################
@@ -834,7 +823,7 @@ def TF_VAEGAN_helper(gammaD, gammaG, image_embedding, class_embedding, nepoch, s
                      default_a2):
     dataroot = dataroot if dataroot is not None else "/home/cristianopatricio/Documents/Datasets" \
                                                      "/xlsa17/data"
-    image_embedding = image_embedding if image_embedding is not None else "res101"
+    image_embedding = image_embedding if image_embedding is not None else "ResNet101"
     class_embedding = class_embedding if class_embedding is not None else "att"
     resSize = resSize if resSize is not None else default_resSize
     attSize = attSize if attSize is not None else default_attSize
@@ -1096,7 +1085,7 @@ def CE_GZSL_Helper(dataroot, image_embedding, class_embedding, split, batch_size
                    default_ins_temp, default_cls_temp, default_nclass_all, default_nclass_seen):
     dataroot = dataroot if dataroot is not None else "/home/cristianopatricio/Documents/Datasets" \
                                                      "/xlsa17/data"
-    image_embedding = image_embedding if image_embedding is not None else "res101"
+    image_embedding = image_embedding if image_embedding is not None else "ResNet101"
     class_embedding = class_embedding if class_embedding is not None else "att"
     split = split if split is not None else default_split
     lr = lr if lr is not None else default_lr
