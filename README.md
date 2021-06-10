@@ -411,6 +411,66 @@ However, for the remaining ZSL methods, the results on the generalized setting a
 
 ## 4. Extracting Custom Features
 
+In order to extract features from a custom CNN model, run the following code:
+
+```bash
+python feature_extraction.py --model "MobileNet" --dataset_path "/path/to/dataset/*.jpg"
+```
+
+The output from above execution of the previous script is a ```.npy``` file containing the features.
+
+After extracting the features, it is necessary to create a Matlab dictionary so that it can be evaluated along the ZSL methods. To do that, run the following code:
+
+```bash
+python custom_features.py --dataset AWA2 --dataroot "/path/to/dataset/" --features "MobileNet-AWA2-features" --features_path "/path/to/npy/features/file"
+```
+
+The output from the execution of the previous script is a ```.mat``` file that can be passed as a parameter for evaluating the ZSL methods using custom features.
+
 ## 5. Optimizing TensorFlow Models with TensorRT
 
+When running deep learning models on low-power devices such as the Jetson Nano, it is desirable that the models are optimized to take advantage of GPU capabilities. Thus, we provide two python scripts to optimize TensorFlow models (1.x and 2.x) using TensorRT optimization.
+
+* **TF 1.x models**:
+
+In the case of TensorFlow 1.x models, please refer to the **Convert_TF1.x_Models_to_TensorRT.py** (```TF_models_optimization/Convert_TF1.x_Models_to_TensorRT.py```). 
+
+*Note*: The TF 1.x model to be optimized must be saved as follows:
+
+```python
+saver = tf.train.Saver()
+sess = tf.Session()
+sess.run(tf.global_variables_initializer())
+
+...
+# Save Model
+saver.save(sess, "model_xpto_tf1")
+```
+
+* **TF 2.x models**:
+
+In the case of TensorFlow 2.x models, please refer to the **Convert_TF2.x_Models_to_TensorRT.py** (```TF_models_optimization/Convert_TF2.x_Models_to_TensorRT.py```). 
+
+*Note*: The TF 2.x model to be optimized must be saved using:
+
+```python
+tf.saved_model.save(model, 'xpto_saved_model')
+```
+
+
+
 ## 6. Evaluating the Computational Performance of ZSL methods
+
+* To measure the time consumed in the visual feature extraction, run the following code snippet:
+
+```bash
+python feature_extraction_inference_time/main.py
+```
+
+* To measure the time consumed by different ZSL methods for classifying a test image, run the following code snippet:
+
+*Note*: You need to download and decompress [this](http://socia-lab.di.ubi.pt/~cristiano_patricio/data/models_DEM.zip) file into the ```zsl_methods_inference_time/``` directory so that DEM model can be evaluated.
+
+```bash
+python zsl_methods_inference_time/main.py
+```
