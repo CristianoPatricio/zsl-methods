@@ -2,20 +2,29 @@
 
 ---
 
-## 1. Datasets
+## Table of Contents:
 
-The datasets used to evaluate the ZSL methods can be downloaded [here](http://socia-lab.di.ubi.pt/~cristiano_patricio/data/zsl-datasets.zip). 
+1. [Datasets](#1-datasets)
+2. [Methods](#2-methods)
+3. [Special Case: LAD dataset](#3-special-case-lad-dataset)
+4. [Extracting Custom Features](#4-extracting-custom-features)
+5. [Optimizing TensorFlow Models using TensorRT](#5-optimizing-tensorflow-models-with-tensorrt)
+6. [Evaluating the Computational Performance of ZSL methods](#6-evaluating-the-computational-performance-of-zsl-methods)
 
-| Dataset | No. Classes | No. Instances | No. Attributes |
-|:--------|:-----------:|:-------------:|:--------------:|
-| AWA1 | 50 | 30,475 | 85 |
-| AWA2 | 50 | 37,322 | 85 |
-| CUB | 200 | 11,788 | 312 |
-| SUN | 717 | 14,340 | 102 |
-| APY | 32 | 15,339 | 64 |
-| LAD | 230 | 78,017 | 359 |
+## 1. Datasets <span style="font-size:20px;">[:arrow_up:](#table-of-contents)</span>
 
-## 2. Methods
+The datasets used to evaluate the ZSL methods can be downloaded [here](http://socia-lab.di.ubi.pt/~cristiano_patricio/data/zsl-datasets.zip). ([MD5](http://socia-lab.di.ubi.pt/~cristiano_patricio/data/zsl-datasets_checkmd5.md5))
+
+| Dataset | No. Classes | No. Instances | No. Attributes | Download Images |
+|:--------|:-----------:|:-------------:|:--------------:| :---------: |
+| AWA1 | 50 | 30,475 | 85 | Not available |
+| AWA2 | 50 | 37,322 | 85 | [AWA2 Images](https://cvml.ist.ac.at/AwA2/AwA2-data.zip) |
+| CUB | 200 | 11,788 | 312 | [CUB Images](https://drive.google.com/file/d/1hbzc_P1FuxMkcabkgn9ZKinBwW683j45/view) |
+| SUN | 717 | 14,340 | 102 | [SUN Images](https://cs.brown.edu/~gmpatter/Attributes/SUNAttributeDB_Images.tar.gz) |
+| APY | 32 | 15,339 | 64 | [a-Yahoo Images](http://vision.cs.uiuc.edu/attributes/ayahoo_test_images.tar.gz) / [a-Pascal Images](http://pjreddie.com/media/files/VOCdevkit_08-Jun-2007.tar) |
+| LAD | 230 | 78,017 | 359 | [LAD Images](https://drive.google.com/drive/folders/1WU2dld1rt5ajWaZqY3YLwLp-6USeQiVG) |
+
+## 2. Methods <span style="font-size:20px;">[:arrow_up:](#table-of-contents)</span>
 
 We select six state-of-the-art ZSL methods, including projection-based methods (ESZSL, SAE, and DEM), and generative methods (f-CLSWGAN, TF-VAEGAN, and CE-GZSL). 
 
@@ -342,7 +351,7 @@ CE_GZSL(dataset="AWA1", filename="MobileNetV2")
 | APY    |  300  |  0.1  | 0.1 | 1024 |
 | LAD    |  1800 |  0.1 | 0.1  | 1024 |
 
-## 3. Special Case: LAD dataset
+## 3. Special Case: LAD dataset <span style="font-size:20px;">[:arrow_up:](#table-of-contents)</span>
 
 LAD dataset must be evaluated on each of the five available splits (*att_splits_0.mat*, *att_splits_1.mat*, *att_splits_2.mat*, *att_splits_3.mat*, *att_splits_4.mat*). This means that each ZSL method should be executed for each of the provided splits.
 
@@ -409,9 +418,9 @@ evaluate_LAD_GZSL(filename_seen="results_seen.txt", filename_unseen="results_uns
 
 However, for the remaining ZSL methods, the results on the generalized setting are obtained through the use of ```compute_harmonic_acc_lad(split, att_split, preds_seen_file, preds_unseen_file, seen)``` instead of ```compute_harmonic_SAE_LAD(split, att_split, preds=)```.
 
-## 4. Extracting Custom Features
+## 4. Extracting Custom Features <span style="font-size:20px;">[:arrow_up:](#table-of-contents)</span>
 
-In order to extract features from a custom CNN model, run the following code:
+In order to extract features for the datasets using a custom CNN architecture, run the following code:
 
 ```bash
 python feature_extraction.py --model "MobileNet" --dataset_path "/path/to/dataset/*.jpg"
@@ -427,7 +436,7 @@ python custom_features.py --dataset AWA2 --dataroot "/path/to/dataset/" --featur
 
 The output from the execution of the previous script is a ```.mat``` file that can be passed as a parameter for evaluating the ZSL methods using custom features.
 
-## 5. Optimizing TensorFlow Models with TensorRT
+## 5. Optimizing TensorFlow Models with TensorRT <span style="font-size:20px;">[:arrow_up:](#table-of-contents)</span>
 
 When running deep learning models on low-power devices such as the Jetson Nano, it is desirable that the models are optimized to take advantage of GPU capabilities. Thus, we provide two python scripts to optimize TensorFlow models (1.x and 2.x) using TensorRT optimization.
 
@@ -459,7 +468,7 @@ tf.saved_model.save(model, 'xpto_saved_model')
 
 
 
-## 6. Evaluating the Computational Performance of ZSL methods
+## 6. Evaluating the Computational Performance of ZSL methods <span style="font-size:20px;">[:arrow_up:](#table-of-contents)</span>
 
 * To measure the time consumed in the visual feature extraction, run the following code snippet:
 
@@ -469,7 +478,7 @@ python feature_extraction_inference_time/main.py
 
 * To measure the time consumed by different ZSL methods for classifying a test image, run the following code snippet:
 
-*Note*: You need to download and decompress [this](http://socia-lab.di.ubi.pt/~cristiano_patricio/data/models_DEM.zip) file into the ```zsl_methods_inference_time/``` directory so that DEM model can be evaluated.
+*Note*: You need to download and decompress [this](http://socia-lab.di.ubi.pt/~cristiano_patricio/data/models_DEM.zip) file  ([MD5](http://socia-lab.di.ubi.pt/~cristiano_patricio/data/models_DEM_checkmd5.md5)) into the ```zsl_methods_inference_time/``` directory so that DEM model can be evaluated.
 
 ```bash
 python zsl_methods_inference_time/main.py
