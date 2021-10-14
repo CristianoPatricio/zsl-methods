@@ -2,6 +2,19 @@
 
 ---
 
+Use this bibtex to cite this repository:
+
+```
+@misc{patrício2021zspeedl,
+      title={ZSpeedL -- Evaluating the Performance of Zero-Shot Learning Methods using Low-Power Devices}, 
+      author={Cristiano Patrício and João Neves},
+      year={2021},
+      eprint={2110.04535},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
+
 ## Table of Contents:
 
 1. [Datasets](#1-datasets)
