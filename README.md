@@ -5,14 +5,13 @@
 Use this bibtex to cite this repository:
 
 ```
-@misc{patrício2021zspeedl,
-      title={ZSpeedL -- Evaluating the Performance of Zero-Shot Learning Methods using Low-Power Devices}, 
-      author={Cristiano Patrício and João Neves},
-      year={2021},
-      eprint={2110.04535},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
-}
+@INPROCEEDINGS{9663762,
+  author={Patrício, Cristiano and Neves, João C.},
+  booktitle={Proceedings of the IEEE International Conference on Advanced Video and Signal Based Surveillance (AVSS)}, 
+  title={ZSpeedL - Evaluating the Performance of Zero-Shot Learning Methods using Low-Power Devices}, 
+  year={2021},
+  pages={1-8},
+  doi={10.1109/AVSS52988.2021.9663762}}
 ```
 
 ## Table of Contents:
